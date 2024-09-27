@@ -67,7 +67,7 @@
                         <form id="formStudentLogin" class="mb-6">
                             <div class="mb-6">
                                 <label for="email" class="form-label">รหัสประจำตัวนักเรียน (5 หลัก)</label>
-                                <input type="text" class="form-control" id="Username" name="Username"
+                                <input type="tel" class="form-control" id="Username" name="Username"
                                     placeholder="XXXXX" autofocus />
                             </div>
                             <div class="mb-6 form-password-toggle">
@@ -81,7 +81,10 @@
                             </div>
 
                             <div class="mb-6">
-                                <button class="btn btn-primary d-grid w-100" type="submit">เข้าสู่ระบบ</button>
+                                <button class="btn btn-primary w-100" id="SubLogin" type="submit">
+                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"
+                                        style="display: none;"></span> เข้าสู่ระบบ
+                                    </button>
                             </div>
                         </form>
 

@@ -8,7 +8,8 @@ $(document).on('submit','#formStudentLogin', function(e) {
         type: 'POST',
         data: formData,
         beforeSend: function() {
-            $(this).attr('disabled', 'disabled');
+            $('#SubLogin').find('.spinner-border').show();
+            $('#SubLogin').attr('disabled', 'disabled');
         },
         success: function(response) {
             //console.log(response);
@@ -18,6 +19,8 @@ $(document).on('submit','#formStudentLogin', function(e) {
                     text: "ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง ? <br> ติดต่อฝ่ายทะเบียน วิชาการ",
                     icon: "error"
                   });
+                  $('#SubLogin').find('.spinner-border').hide();
+                  $('#SubLogin').removeAttr('disabled');
             }else{
                 window.location.href = 'Dashboard';
             }
@@ -29,7 +32,8 @@ $(document).on('submit','#formStudentLogin', function(e) {
             // }
         },
         error: function(xhr, status, error) {
-            $(this).removeAttr('disabled');
+            $('#SubLogin').find('.spinner-border').hide();
+            $('#SubLogin').removeAttr('disabled');
             var response = JSON.parse(xhr.responseText);
             $('#errorMsg').text(response.message).show();
         }

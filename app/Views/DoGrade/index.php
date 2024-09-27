@@ -21,7 +21,7 @@
                         <td><?=$v_Geade->SubjectName?></td>
                         <?php $SubjectType = explode('/',$v_Geade->SubjectType); ?>
                         <td class="text-center"><?=$SubjectType[1]?></td>
-                        <td class="Unit text-center"><?=$v_Geade->SubjectUnit?></td>
+                        <td class="Unit text-center"><?=$v_Geade->SubjectUnit?></td>                        
                         <td class="Grade text-center"><?=$v_Geade->Grade?></td>
                     </tr>
                     <?php endforeach; ?>
@@ -67,7 +67,12 @@ function sumGrade() {
     const Grade = document.querySelectorAll('.Grade'); // เลือกทุก cell ที่มี class "price"
     let SumGrade = 0;
     Grade.forEach(function callback(value, index) {
-        SumGrade += parseFloat(Unit[index].textContent) * parseFloat(value.textContent) /
+        if(value.textContent == "มส" || value.textContent == "" || value.textContent == "ร"){
+            var G = 0;
+        }else{
+            var G = parseFloat(value.textContent);
+        }
+        SumGrade += parseFloat(Unit[index].textContent) * G /
             totalUnit; // บวกค่าของแต่ละ cell
     });
     var str = SumGrade;
