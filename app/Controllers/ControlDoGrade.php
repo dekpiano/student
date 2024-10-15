@@ -39,20 +39,23 @@ class ControlDoGrade extends BaseController
 
         $data['Geade'] = $TbRegis->select(
             'tb_register.StudentID,
-            tb_register.SubjectCode,
+            tb_register.SubjectID,
             tb_register.RegisterYear,
             tb_register.RegisterClass,
             tb_register.TeacherID,
             tb_subjects.SubjectName,
+             tb_subjects.SubjectCode,
             tb_subjects.SubjectType,
             tb_subjects.SubjectUnit,
             tb_register.Grade'
         )
-        ->join('tb_subjects','tb_subjects.SubjectCode = tb_register.SubjectCode')
+        ->join('tb_subjects','tb_subjects.SubjectID = tb_register.SubjectID')
         ->where('tb_register.RegisterYear',$Term.'/'.$Year)
         ->where('tb_register.StudentID',session()->get('UserId'))
         ->where('tb_subjects.SubjectYear',$Term.'/'.$Year)
-        ->orderBy('tb_register.SubjectCode','ASC')
+        ->orderBy('tb_subjects.SubjectType','ASC')
+        ->orderBy('tb_subjects.FirstGroup','ASC')  
+        ->orderBy('tb_subjects.SubjectCode','ASC')
         ->get()->getResult();
 
         //echo '<pre>';print_r($data['CheckYearNow']); exit();

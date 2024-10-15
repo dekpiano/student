@@ -12,8 +12,8 @@
 
     <meta name="description" content="" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?=base_url()?>assets/img/favicon/favicon.ico" />
+   <!-- Favicon -->
+   <link rel="icon" type="image/x-icon" href="<?=base_url()?>uploads/LogoSchool/LogoSKJ_4.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -120,7 +120,7 @@
 
     <!-- Main JS -->
     <script src="<?=base_url()?>assets/js/main.js"></script>
-    <script src="<?=base_url()?>assets/js/Student/JsStudent.js?v=1"></script>
+    <script src="<?=base_url()?>assets/js/Student/JsStudent.js?v=2"></script>
 
     <!-- Page JS -->
 

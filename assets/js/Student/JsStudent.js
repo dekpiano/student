@@ -16,7 +16,7 @@ $(document).on('submit','#formStudentLogin', function(e) {
             if(response == 0){
                 Swal.fire({
                     title: "แจ้งเตือน?",
-                    text: "ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง ? <br> ติดต่อฝ่ายทะเบียน วิชาการ",
+                    html: "ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง ? <br> ติดต่อฝ่ายทะเบียน วิชาการ",
                     icon: "error"
                   });
                   $('#SubLogin').find('.spinner-border').hide();
