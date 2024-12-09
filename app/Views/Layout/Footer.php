@@ -54,6 +54,10 @@
 
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script src="<?=base_url()?>assets/js/main.js"></script>
+    <script src="<?=base_url()?>assets/js/Student/JsStudent.js?v=2"></script>
+
 </body>
 
 </html>

@@ -39,3 +39,8 @@ $(document).on('submit','#formStudentLogin', function(e) {
         }
     });
 });
+
+$(document).on('change','#defaultSelect', function() {
+
+        window.location.href = "../"+$(this).val();
+});

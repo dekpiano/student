@@ -36,6 +36,13 @@ class ControlDoGrade extends BaseController
         $TbOnoff = $data['dbAca']->table('tb_register_onoff');
         $data['CheckOnoffDoGrade'] = $TbOnoff->where('onoff_id',1)->get()->getRow();
         
+        $data['CheckYearGradeUser'] = $TbRegis->select('RegisterYear')
+        ->join('tb_students','tb_students.StudentID = tb_register.StudentID')
+        ->where('tb_students.StudentID',session()->get('UserId'))
+        ->groupBy('RegisterYear')
+        ->orderBy("CAST(SUBSTRING(RegisterYear, LOCATE('/', RegisterYear) + 1) AS UNSIGNED)")
+        ->orderBy("CAST(SUBSTRING(RegisterYear, 1, LOCATE('/', RegisterYear) - 1) AS UNSIGNED)")
+        ->get()->getResult();
 
         $data['Geade'] = $TbRegis->select(
             'tb_register.StudentID,
@@ -58,7 +65,7 @@ class ControlDoGrade extends BaseController
         ->orderBy('tb_subjects.SubjectCode','ASC')
         ->get()->getResult();
 
-        //echo '<pre>';print_r($data['CheckYearNow']); exit();
+        //echo '<pre>';print_r($data['CheckYearGradeUser']); exit();
 
         return view('Layout/Header',$data)
                 .view('Layout/NavbarLeft')

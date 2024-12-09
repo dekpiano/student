@@ -1,7 +1,31 @@
 <div class="container-xxl flex-grow-1 container-p-y align-content-center">
+
+
+    
+
     <?php if($CheckOnoffDoGrade->onoff_status == "true") :?>
-    <div class="card col-12 col-md-7">
-        <h5 class="card-header bg-primary text-white">ผลการเรียน ภาคเรียนที่ <?=$uri->getSegment(2)?>/<?=$uri->getSegment(3)?></h5>
+        <div class="text-center mb-6 d-flex justify-content-center" >
+        <div class="card" style="width: max-content;">
+            <div class="card-body">
+                <div class="btn-group">
+                    <div class="w-100 me-2 align-self-center">
+                    ปีการศึกษา  
+                    </div>
+                  <select id="defaultSelect" class="form-select">
+                        <?php foreach ($CheckYearGradeUser as $key => $value):?>
+                            <option <?= ($uri->getSegment(2)."/".$uri->getSegment(3)) == $value->RegisterYear ?"selected":""?> value="<?=$value->RegisterYear;?>"><?=$value->RegisterYear;?></option>
+                            <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row justify-content-center">
+    <div class="card col-12 col-md-7 p-0">
+        <h5 class="card-header bg-primary text-white">ผลการเรียน ภาคเรียนที่
+            <?=$uri->getSegment(2)?>/<?=$uri->getSegment(3)?></h5>
         <div class=" table-responsive">
             <table class="table table-hover table-bordered">
                 <thead>
@@ -21,7 +45,7 @@
                         <td><?=$v_Geade->SubjectName?></td>
                         <?php $SubjectType = explode('/',$v_Geade->SubjectType); ?>
                         <td class="text-center"><?=$SubjectType[1]?></td>
-                        <td class="Unit text-center"><?=$v_Geade->SubjectUnit?></td>                        
+                        <td class="Unit text-center"><?=$v_Geade->SubjectUnit?></td>
                         <td class="Grade text-center"><?=$v_Geade->Grade?></td>
                     </tr>
                     <?php endforeach; ?>
@@ -34,6 +58,8 @@
             </table>
         </div>
     </div>
+    </div>
+
     <?php else:?>
     <div class="row justify-content-center">
         <div class="col-md-4 ">
@@ -41,7 +67,7 @@
                 กำลัง Update ข้อมูลผลการเรียน
             </div>
             <img src="<?=base_url('uploads/404/404.png')?>" class="img-fluid" alt="">
-        </div>       
+        </div>
     </div>
     <?php endif; ?>
 </div>
@@ -67,9 +93,9 @@ function sumGrade() {
     const Grade = document.querySelectorAll('.Grade'); // เลือกทุก cell ที่มี class "price"
     let SumGrade = 0;
     Grade.forEach(function callback(value, index) {
-        if(value.textContent == "มส" || value.textContent == "" || value.textContent == "ร"){
+        if (value.textContent == "มส" || value.textContent == "" || value.textContent == "ร") {
             var G = 0;
-        }else{
+        } else {
             var G = parseFloat(value.textContent);
         }
         SumGrade += parseFloat(Unit[index].textContent) * G /
