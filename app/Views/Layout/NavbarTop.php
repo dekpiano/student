@@ -15,17 +15,18 @@
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                         <!-- Search -->
-                        <div class="navbar-nav align-items-center">
+                        <!-- <div class="navbar-nav align-items-center">
                             <div class="nav-item d-flex align-items-center">
                                 <i class="bx bx-search bx-md"></i>
-                                <?=$Title?>
+                                
                             </div>
-                        </div>
+                        </div> -->
                         <!-- /Search -->
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
                             <li class="nav-item me-2">
-                                <?=session()->get('Fullname')?>
+                                <?=session()->get('Fullname')?> <br>
+                                กำลังศึกษาชั้น <?=session()->get('UserClass')?>
                             </li>
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -48,7 +49,9 @@
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <h6 class="mb-0">
-                                                        <?=session()->get('Fullname')?></h6>
+                                                        <?=session()->get('Fullname')?>
+                                                        <?=session()->get('UserClass')?>
+                                                    </h6>
                                                     <small class="text-muted">นักเรียน</small>
                                                 </div>
                                             </div>

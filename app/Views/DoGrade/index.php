@@ -1,10 +1,16 @@
 <div class="container-xxl flex-grow-1 container-p-y align-content-center">
 
 
+<?php 
+$selectedLevels  = explode("|",  $CheckOnoffDoGrade->onoff_Level);  
+$SubClass1 = explode(".",session()->get('UserClass'));
+$SubClass2 = explode("/",$SubClass1[1]);
+$IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
 
+?>
 
-    <?php if($CheckOnoffDoGrade->onoff_status == "true") :?>
-
+    <?php if($CheckOnoffDoGrade->onoff_status == "true" && $IfCechkLevel) :?>
+    
     <div class="text-center mb-6 d-flex justify-content-center">
         <div class="card" style="width: max-content;">
             <div class="card-body">
@@ -108,6 +114,7 @@
 
 
     <?php else:?>
+      
     <div class="row justify-content-center">
         <div class="col-md-4 ">
             <div class="alert alert-danger" role="alert">
