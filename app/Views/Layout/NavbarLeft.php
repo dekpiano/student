@@ -29,6 +29,12 @@
                             <div class="text-truncate" data-i18n="Support">ดูผลการเรียน</div>
                         </a>
                     </li>
+                    <li class="menu-item <?=$uri->getSegment(1) == "club" ?"active":""?> ">
+                        <a href="<?=base_url('club');?>" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-group"></i>
+                            <div class="text-truncate" data-i18n="Support">กิจกรรมชุมนุม</div>
+                        </a>
+                    </li>
 
                     <!-- Layouts -->
                     <!-- <li class="menu-item">
@@ -69,21 +75,14 @@
 
 
                     <!-- Misc -->
-                    <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
+                    <!-- <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
                     <li class="menu-item">
                         <a href="#"
                             target="_blank" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-support"></i>
                             <div class="text-truncate" data-i18n="Support">Support</div>
                         </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#"
-                            target="_blank" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-file"></i>
-                            <div class="text-truncate" data-i18n="Documentation">Documentation</div>
-                        </a>
-                    </li>
+                    </li> -->
                 </ul>
             </aside>
             <!-- / Menu -->

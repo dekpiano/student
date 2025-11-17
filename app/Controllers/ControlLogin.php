@@ -8,7 +8,8 @@ class ControlLogin extends BaseController
 {
     public  function index()
     {
-        return view('Dashboards/index');
+        $data['title'] = "Login";
+        return view('Dashboard/index', $data);
     }
 
     public function loginProcess()
@@ -21,9 +22,29 @@ class ControlLogin extends BaseController
        
         $username = $this->request->getVar('Username');
         $password = $this->request->getVar('Password');
-        $user = $model->getUser($username,$password);
+        
+        $user = $model->where('StudentCode', $username)->first();
 
+        $passwordCorrect = false;
         if ($user) {
+            // User exists, now check password
+            if (!empty($user['StudentPassword'])) {
+                // New security: Hashed password exists, verify it
+                if (password_verify($password, $user['StudentPassword'])) {
+                    $passwordCorrect = true;
+                }
+            } else {
+                // Old security: No hashed password, check against StudentIDNumber (the old password)
+                if ($password == $user['StudentIDNumber']) {
+                    $passwordCorrect = true;
+                    // This is a successful login with the old password.
+                    // Let's upgrade their security by hashing the password for future logins.
+                    $model->update($user['StudentID'], ['StudentPassword' => password_hash($password, PASSWORD_DEFAULT)]);
+                }
+            }
+        }
+
+        if ($passwordCorrect) {
             $data = array('UserId'=>$user['StudentID'],
             'UserCode' => $user['StudentCode'],
             'UserClass' => $user['StudentClass'],

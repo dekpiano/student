@@ -17,7 +17,7 @@ class ControlDashboard extends BaseController
     {
         $session = session();
         $data['uri'] = $this->request->uri;
-        $data['Title'] = "Dashboard";
+        $data['title'] = "Dashboard";
         $data['Description'] = "แผงควบคุม";
 
         return view('Layout/Header',$data)

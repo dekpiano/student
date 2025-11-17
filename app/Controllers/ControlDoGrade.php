@@ -24,7 +24,7 @@ class ControlDoGrade extends BaseController
     public  function index($Term,$Year)
     {
         $data = $this->DataMain();
-        $data['Title'] = "ดูผลการเรียน";
+        $data['title'] = "ดูผลการเรียน";
         $data['Description'] = "ผลการเรียน";
 
         $TbRegis = $data['dbAca']->table('tb_register');   

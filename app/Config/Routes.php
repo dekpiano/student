@@ -12,3 +12,13 @@ $routes->match(['get', 'post'],'Logout', 'ControlLogin::logout');
 
 $routes->get('Dashboard', 'ControlDashboard::index');
 $routes->get('DoGrade/(:any)/(:any)', 'ControlDoGrade::index/$1/$2');
+
+// Club Routes
+$routes->get('club', 'ControlClub::index');
+$routes->get('club/view/(:num)', 'ControlClub::view/$1');
+$routes->post('club/join', 'ControlClub::join');
+$routes->post('club/cancel', 'ControlClub::cancelClub');
+$routes->get('club/results-summary', 'ControlClub::getResultsSummary');
+$routes->get('club/attendance-summary/(:num)/(:num)', 'ControlClub::getAttendanceSummary/$1/$2');
+$routes->get('club/remaining-changes', 'ControlClub::getRemainingChanges');
+

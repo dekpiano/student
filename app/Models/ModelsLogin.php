@@ -7,13 +7,18 @@ use CodeIgniter\Model;
 class ModelsLogin extends Model
 {
     protected $table = 'tb_students';
-    protected $allowedFields = ['username', 'password'];
+    protected $primaryKey = 'StudentID';
+    protected $allowedFields = ['username', 'password', 'StudentPassword', 'StudentCode', 'StudentIDNumber'];
     protected $beforeInsert = ['hashPassword'];
 
-
-    public function getUser($username,$password)
+    protected function hashPassword(array $data)
     {
-        return $this->where('StudentCode', $username)->where('StudentIDNumber',$password)->first();
+        if (! isset($data['data']['password'])) {
+            return $data;
+        }
+
+        $data['data']['password'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
+
+        return $data;
     }
-    
 }
