@@ -27,11 +27,22 @@ class ControlClub extends BaseController
 
     public function index()
     {
-        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod();
-        $current_year = $active_reg_period['c_onoff_year'] ?? null;
-        $current_term = $active_reg_period['c_onoff_term'] ?? null;
+        // Calculate current academic year (Buddhist Era)
+        $current_calendar_year = (int)date('Y');
+        $current_month = (int)date('m');
+        $current_be_year = $current_calendar_year + 543;
 
-        $registration_period = $active_reg_period; // Use the active period found
+        if ($current_month >= 1 && $current_month <= 4) { // Jan - Apr
+            $current_academic_year = $current_be_year - 1;
+        } else { // May - Dec
+            $current_academic_year = $current_be_year;
+        }
+
+        $registration_period = $this->ModelClub->getActiveRegistrationPeriod($current_academic_year, 'student');
+        
+        $current_year = $registration_period['c_onoff_year'] ?? null;
+        $current_term = $registration_period['c_onoff_term'] ?? null;
+
         $student_club = null;
         $clubs = [];
 
@@ -96,7 +107,18 @@ class ControlClub extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'ไม่พบรหัสชุมนุม']);
         }
 
-        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod();
+        // Calculate current academic year (Buddhist Era)
+        $current_calendar_year = (int)date('Y');
+        $current_month = (int)date('m');
+        $current_be_year = $current_calendar_year + 543;
+
+        if ($current_month >= 1 && $current_month <= 4) { // Jan - Apr
+            $current_academic_year = $current_be_year - 1;
+        } else { // May - Dec
+            $current_academic_year = $current_be_year;
+        }
+
+        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod($current_academic_year, 'student');
         $current_year = $active_reg_period['c_onoff_year'] ?? null;
         $current_term = $active_reg_period['c_onoff_term'] ?? null;
         $student_id = $this->session->get('UserId');
@@ -142,7 +164,18 @@ class ControlClub extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'ไม่พบรหัสชุมนุม']);
         }
 
-        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod();
+        // Calculate current academic year (Buddhist Era)
+        $current_calendar_year = (int)date('Y');
+        $current_month = (int)date('m');
+        $current_be_year = $current_calendar_year + 543;
+
+        if ($current_month >= 1 && $current_month <= 4) { // Jan - Apr
+            $current_academic_year = $current_be_year - 1;
+        } else { // May - Dec
+            $current_academic_year = $current_be_year;
+        }
+
+        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod($current_academic_year, 'student');
         $student_id = $this->session->get('UserId');
 
         // Check registration period
@@ -210,7 +243,19 @@ class ControlClub extends BaseController
         }
 
         $student_id = $this->session->get('UserId');
-        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod();
+        
+        // Calculate current academic year (Buddhist Era)
+        $current_calendar_year = (int)date('Y');
+        $current_month = (int)date('m');
+        $current_be_year = $current_calendar_year + 543;
+
+        if ($current_month >= 1 && $current_month <= 4) { // Jan - Apr
+            $current_academic_year = $current_be_year - 1;
+        } else { // May - Dec
+            $current_academic_year = $current_be_year;
+        }
+
+        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod($current_academic_year, 'student');
 
         if (empty($active_reg_period)) {
             return $this->response->setJSON(['success' => false, 'message' => 'ไม่อยู่ในช่วงเวลาการลงทะเบียน', 'remaining_changes' => 0]);

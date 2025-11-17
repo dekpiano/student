@@ -21,12 +21,14 @@ class ModelClub extends Model
     ];
 
     // Get the registration period
-    public function getActiveRegistrationPeriod()
+    public function getActiveRegistrationPeriod($year, $for_type = 'student')
     {
         $current_time = date('Y-m-d H:i:s');
         return $this->db->table('tb_club_onoff')
             ->where('c_onoff_regisstart <=', $current_time)
             ->where('c_onoff_regisend >=', $current_time)
+            ->where('c_onoff_year', $year)
+            ->where('c_onoff_for', $for_type)
             ->get()->getRowArray();
     }
 
