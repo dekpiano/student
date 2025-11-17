@@ -29,6 +29,7 @@ class ModelClub extends Model
             ->where('c_onoff_regisend >=', $current_time)
             ->where('c_onoff_year', $year)
             ->where('c_onoff_for', $for_type)
+            ->where('c_onoff_status', 1)
             ->get()->getRowArray();
     }
 
