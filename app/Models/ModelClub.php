@@ -33,17 +33,49 @@ class ModelClub extends Model
             ->get()->getRowArray();
     }
 
-    // Get all available clubs for a given year and term
-    public function getAvailableClubs($year, $term)
-    {
-        $clubs = $this->where('club_year', $year)
-                      ->where('club_trem', $term)
-                      ->where('club_status', 'open')
-                      ->findAll();
+        // Get all available clubs for a given year, term, and student level group
 
-        if (empty($clubs)) {
-            return [];
-        }
+        public function getAvailableClubs($year, $term, $level_group)
+
+        {
+
+            $builder = $this->where('club_year', $year)
+
+                            ->where('club_trem', $term)
+
+                            ->where('club_status', 'open');
+
+    
+
+            // Filter by grade level group
+
+            if ($level_group === 'junior') {
+
+                // Junior high students see junior high clubs and clubs for both levels
+
+                $builder->whereIn('club_level', ['ม.ต้น', 'ม.ต้น หรือ ม.ปลาย']);
+
+            } elseif ($level_group === 'senior') {
+
+                // Senior high students see senior high clubs and clubs for both levels
+
+                $builder->whereIn('club_level', ['ม.ปลาย', 'ม.ต้น หรือ ม.ปลาย']);
+
+            }
+
+            // If level_group is not set or invalid, it will return all open clubs for the term.
+
+    
+
+            $clubs = $builder->findAll();
+
+    
+
+            if (empty($clubs)) {
+
+                return [];
+
+            }
 
         // Get all personnel data once to reduce DB queries
         $personnel_db = \Config\Database::connect('personnel');

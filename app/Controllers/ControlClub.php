@@ -55,7 +55,20 @@ class ControlClub extends BaseController
                 time() <= strtotime($registration_period['c_onoff_regisend']) &&
                 empty($student_club)
             ) {
-                $clubs = $this->ModelClub->getAvailableClubs($current_year, $current_term);
+                $student_class = $this->session->get('UserClass'); // e.g., 'ม.4/1'
+                $level_group = null;
+                if ($student_class) {
+                    $grade_parts = explode('/', $student_class);
+                    $numeric_grade_string = str_replace('ม.', '', $grade_parts[0]);
+                    $grade_level = (int)$numeric_grade_string;
+
+                    if ($grade_level >= 1 && $grade_level <= 3) {
+                        $level_group = 'junior';
+                    } elseif ($grade_level >= 4 && $grade_level <= 6) {
+                        $level_group = 'senior';
+                    }
+                }
+                $clubs = $this->ModelClub->getAvailableClubs($current_year, $current_term, $level_group);
             }
         }
 

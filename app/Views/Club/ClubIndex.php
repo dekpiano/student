@@ -159,11 +159,14 @@
                                     
                                     <h5 class="card-title fw-bold">ชุมนุม <?= esc($club['club_name']) ?></h5>
                                     
-                                    <p class="card-subtitle text-muted mb-3">
-                                        <i class="bx bx-user-circle me-1"></i>
-                                        ครูที่ปรึกษา : <?= esc($club['advisor_names']) ?>
-                                    </p>
-
+                                                                         <p class="card-subtitle text-muted mb-3">
+                                                                            <i class="bx bx-user-circle me-1"></i>
+                                                                            ครูที่ปรึกษา : <?= esc($club['advisor_names']) ?>
+                                                                        </p>
+                                                                        <p class="card-subtitle text-muted mb-3">
+                                                                            <i class="bx bx-group me-1"></i>
+                                                                            ระดับชั้นที่เปิดรับ : <?= esc($club['club_level']) ?>
+                                                                        </p>
                                     <div class="mt-auto">
                                         <div class="d-flex justify-content-between align-items-center mb-1">
                                             <small>สมาชิก</small>
