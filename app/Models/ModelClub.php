@@ -53,13 +53,13 @@ class ModelClub extends Model
 
                 // Junior high students see junior high clubs and clubs for both levels
 
-                $builder->whereIn('club_level', ['ม.ต้น', 'ม.ต้น หรือ ม.ปลาย']);
+                $builder->whereIn('club_level', ['ม.ต้น', 'ม.ต้น และ ม.ปลาย']);
 
             } elseif ($level_group === 'senior') {
 
                 // Senior high students see senior high clubs and clubs for both levels
 
-                $builder->whereIn('club_level', ['ม.ปลาย', 'ม.ต้น หรือ ม.ปลาย']);
+                $builder->whereIn('club_level', ['ม.ปลาย', 'ม.ต้น และ ม.ปลาย']);
 
             }
 
