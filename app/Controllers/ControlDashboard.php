@@ -8,6 +8,7 @@ class ControlDashboard extends BaseController
         $session = session();
      
         if(!$session->get('UserId')){
+            $session->set('redirect_url', current_url());
             header("Location:".base_url()); exit();
         } 
        

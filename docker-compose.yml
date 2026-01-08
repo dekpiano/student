@@ -1,0 +1,54 @@
+services:
+  # PHP Apache Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: skj_student_app
+    ports:
+      - "8090:443" # HTTPS
+    volumes:
+      - .:/var/www/html:delegated
+      - /var/www/html/vendor
+      - /var/www/html/writable
+      - D:/xampp/librarie_skj:/home/skjacth/domains/skj.ac.th/public_html/librarie_skj:delegated
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - DB_HOST=skj2025_db
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=rootpassword
+      - DB_DATABASE=skjacth_academic
+      - DB_DATABASE_SKJ=skjacth_skj
+      - DB_DATABASE_PERSONNEL=skjacth_personnel
+    networks:
+      - skj_network
+      - skj2025_network
+    restart: unless-stopped
+
+  # Database Management Tool
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: skj_student_pma
+    restart: always
+    ports:
+      - "8082:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=skj2025_db
+      - PMA_USER=root
+      - PMA_PASSWORD=rootpassword
+    networks:
+      - skj_network
+      - skj2025_network
+
+networks:
+  skj_network:
+    driver: bridge
+  skj2025_network:
+    external: true
+    name: skj2025_default
+
+volumes:
+  skj_db_data:
+

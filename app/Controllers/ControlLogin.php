@@ -48,15 +48,18 @@ class ControlLogin extends BaseController
             $data = array('UserId'=>$user['StudentID'],
             'UserCode' => $user['StudentCode'],
             'UserClass' => $user['StudentClass'],
+            'UserStatus' => $user['StudentStatus'],
             'Fullname' => $user['StudentPrefix'].$user['StudentFirstName'].' '.$user['StudentLastName'],
             'CheckYearNow'=>$data['CheckYearNow']->schyear_year);
             $session->set($data);
-           //return redirect()->to('Dashboard');
-           echo 1;
+           
+            $redirect = $session->get('redirect_url') ?: base_url('Dashboard');
+            $session->remove('redirect_url');
+
+           return $this->response->setJSON(['status' => 1, 'message' => 'Login successful', 'redirect' => $redirect]);
         } else {
-            $session->setFlashdata('error', 'Username or Password is incorrect');
-            echo 0;
-            //return redirect()->back();
+            //$session->setFlashdata('error', 'Username or Password is incorrect');
+            return $this->response->setJSON(['status' => 0, 'message' => 'ชื่อผู้ใช้งาน หรือ รหัสผ่านไม่ถูกต้อง']);
         }
     }
 

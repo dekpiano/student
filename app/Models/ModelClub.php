@@ -33,6 +33,17 @@ class ModelClub extends Model
             ->get()->getRowArray();
     }
 
+    // Get the latest available registration settings regardless of specific year
+    public function getLatestRegistrationSettings($for_type = 'student')
+    {
+        return $this->db->table('tb_club_onoff')
+            ->where('c_onoff_for', $for_type)
+            ->where('c_onoff_status', 1)
+            ->orderBy('c_onoff_year', 'DESC')
+            ->orderBy('c_onoff_term', 'DESC')
+            ->get()->getRowArray();
+    }
+
         // Get all available clubs for a given year, term, and student level group
 
         public function getAvailableClubs($year, $term, $level_group)
@@ -133,6 +144,18 @@ class ModelClub extends Model
             ->where('c.club_year', $year)
             ->where('c.club_trem', $term)
             ->where('cm.member_status', 'active')
+            ->get()->getRowArray();
+    }
+
+    // Get the most recent active club membership for a student
+    public function getLatestStudentClub($student_id)
+    {
+        return $this->db->table('tb_club_members cm')
+            ->join('tb_clubs c', 'c.club_id = cm.member_club_id')
+            ->where('cm.member_student_id', $student_id)
+            ->where('cm.member_status', 'active')
+            ->orderBy('c.club_year', 'DESC')
+            ->orderBy('c.club_trem', 'DESC')
             ->get()->getRowArray();
     }
 

@@ -73,6 +73,7 @@
             }
         }
         ?>
+        <?php if (empty($student_club)): ?>
         <div class="card shadow-sm border-0 mb-4 registration-banner <?= $banner_class ?>">
             <div class="card-body p-4">
                 <div class="d-flex align-items-center">
@@ -87,49 +88,105 @@
                 </div>
             </div>
         </div>
+        <?php endif; ?>
 
 
         <!-- Main Content -->
         <?php if (!empty($student_club)): ?>
             <!-- Student Already in a Club -->
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <div class="row align-items-center">
-                        <div class="col-md-2 text-center text-success">
-                            <i class="bx bx-user-check" style="font-size: 6rem;"></i>
+            <div class="card shadow-md border-0 overflow-hidden mb-4">
+                <div class="card-header bg-primary text-white p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <i class="bx bx-check-double fs-2 me-3"></i>
+                            <h4 class="mb-0 text-white fw-bold">คุณลงทะเบียนล่วงหน้าสำเร็จแล้ว</h4>
                         </div>
-                        <div class="col-md-10">
-                            <h5 class="card-title text-muted mb-1">คุณได้เข้าร่วมชุมนุมแล้ว</h5>
-                            <h2 class="fw-bold mb-2" style="color: #696cff;"><?= esc($student_club['club_name']) ?></h2>
-                            <p class="mb-3"><?= esc($student_club['club_description']) ?></p>
-                            
-                            <a href="<?= base_url('club/view/' . $student_club['club_id']) ?>" class="btn btn-primary">
-                                <i class="bx bx-show me-1"></i> ดูรายละเอียด
-                            </a>
-                            <button type="button" class="btn btn-info view-attendance-btn"
-                                data-student-id="<?= esc(session()->get('UserId')) ?>"
-                                data-club-id="<?= esc($student_club['club_id']) ?>"
-                                data-club-name="<?= esc($student_club['club_name']) ?>">
-                                <i class="bx bx-time-five me-1"></i> ดูเวลาเรียน
-                            </button>
-                            <button type="button" class="btn btn-secondary view-results-btn">
-                                <i class="bx bx-award me-1"></i> ผลกิจกรรมชุมนุม
-                            </button>
-                            
-                            <?php if (!empty($registration_period) && time() >= strtotime($registration_period['c_onoff_regisstart']) && time() <= strtotime($registration_period['c_onoff_regisend'])): ?>
-                                <button 
-                                    class="btn btn-outline-danger cancel-club-btn" 
-                                    data-club-id="<?= $student_club['club_id'] ?>" 
-                                    data-club-name="<?= esc($student_club['club_name']) ?>">
-                                    <i class="bx bx-x me-1"></i> เปลี่ยนชุมนุม
-                                </button>
+                        <div class="registration-status-badge d-none d-md-block">
+                            <?php if ($banner_class === 'open'): ?>
+                                <span class="badge bg-white text-success px-3 py-2">
+                                    <i class="bx bxs-circle bx-flashing me-1"></i> ระบบเปิดรับสมัครอยู่
+                                </span>
+                            <?php else: ?>
+                                <span class="badge bg-white text-danger px-3 py-2">
+                                    <i class="bx bx-lock-alt me-1"></i> ระบบปิดรับสมัครแล้ว
+                                </span>
                             <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-3 text-center">
+                            <div class="club-avatar-circle mx-auto mb-3 shadow-sm d-flex align-items-center justify-content-center bg-label-primary rounded-circle" style="width: 120px; height: 120px;">
+                                <i class="bx bx-group" style="font-size: 4rem; color: var(--primary-color);"></i>
+                            </div>
+                            <span class="badge bg-label-success px-3 py-2 rounded-pill">สถานะ: ยืนยันแล้ว</span>
+                        </div>
+                        <div class="col-md-9">
+                            <h5 class="text-muted small text-uppercase mb-1 fw-semibold">ข้อมูลชุมนุม</h5>
+                            <h2 class="fw-bold mb-3" style="color: var(--primary-color);"><?= esc($student_club['club_name']) ?></h2>
+                            
+                            <div class="row row-cols-1 row-cols-sm-2 g-3 mb-4">
+                                <div class="col">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-square bg-light me-2 rounded p-2">
+                                            <i class="bx bx-user-circle text-primary fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0 text-muted small">ครูที่ปรึกษา</p>
+                                            <p class="mb-0 fw-semibold"><?= esc($student_club['advisor_names']) ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-square bg-light me-2 rounded p-2">
+                                            <i class="bx bx-calendar text-primary fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <p class="mb-0 text-muted small">ปีการศึกษา / ภาคเรียน</p>
+                                            <p class="mb-0 fw-semibold"><?= esc($registration_period['c_onoff_year'] ?? $student_club['club_year']) ?> / <?= esc($registration_period['c_onoff_term'] ?? $student_club['club_trem']) ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="text-secondary mb-4"><?= esc($student_club['club_description']) ?: 'ไม่มีคำอธิบายสำหรับชุมนุมนี้' ?></p>
+                            
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="<?= base_url('club/view/' . $student_club['club_id']) ?>" class="btn btn-primary px-4">
+                                    <i class="bx bx-show-alt me-1"></i> รายละเอียด
+                                </a>
+                                <button type="button" class="btn btn-outline-primary view-attendance-btn"
+                                    data-student-id="<?= esc(session()->get('UserId')) ?>"
+                                    data-club-id="<?= esc($student_club['club_id']) ?>"
+                                    data-club-name="<?= esc($student_club['club_name']) ?>">
+                                    <i class="bx bx-time-five me-1"></i> เช็คชื่อ
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary view-results-btn">
+                                    <i class="bx bx-award me-1"></i> ผลประเมิน
+                                </button>
+                                
+                                <?php if (!empty($registration_period) && time() >= strtotime($registration_period['c_onoff_regisstart']) && time() <= strtotime($registration_period['c_onoff_regisend'])): ?>
+                                    <button 
+                                        class="btn btn-link text-danger cancel-club-btn p-0 ms-md-auto" 
+                                        data-club-id="<?= $student_club['club_id'] ?>" 
+                                        data-club-name="<?= esc($student_club['club_name']) ?>">
+                                        <i class="bx bx-transfer-alt me-1"></i> ต้องการเปลี่ยนชุมนุม?
+                                    </button>
+                                <?php else: ?>
+                                    <div class="ms-md-auto d-flex align-items-center text-warning bg-label-warning px-2 py-1 rounded">
+                                        <i class="bx bx-info-circle me-1"></i>
+                                        <small>คุณได้เลือกชุมนุมนี้แล้ว ในปีการศึกษานี้ไม่อนุญาตให้เปลี่ยนอีกแล้ว</small>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         <?php elseif (!empty($registration_period) && time() >= strtotime($registration_period['c_onoff_regisstart']) && time() <= strtotime($registration_period['c_onoff_regisend'])): ?>
-            <!-- Club Listing -->
+            <!-- Club Listing (Only show if NOT in a club and period is OPEN) -->
             <div class="row">
                 <?php if (empty($clubs)): ?>
                     <div class="col-12">

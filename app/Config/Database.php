@@ -28,9 +28,9 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => 'skjacth_acade',
-        'password'     => 'Jw123456',
+        'hostname'     => 'skj2025_db',
+        'username'     => 'root',
+        'password'     => 'rootpassword',
         'database'     => 'skjacth_academic',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
@@ -49,10 +49,31 @@ class Database extends Config
 
     public array $personnel = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => 'skjacth_perso',
-        'password'     => 'Jw123456',
+        'hostname'     => 'skj2025_db',
+        'username'     => 'root',
+        'password'     => 'rootpassword',
         'database'     => 'skjacth_personnel',
+        'DBDriver'     => 'MySQLi',
+        'DBPrefix'     => '',
+        'pConnect'     => false,
+        'DBDebug'      => true,
+        'charset'      => 'utf8',
+        'DBCollat'     => 'utf8_general_ci',
+        'swapPre'      => '',
+        'encrypt'      => false,
+        'compress'     => false,
+        'strictOn'     => false,
+        'failover'     => [],
+        'port'         => 3306,
+        'numberNative' => false,
+    ];
+
+    public array $skj = [
+        'DSN'          => '',
+        'hostname'     => 'skj2025_db',
+        'username'     => 'root',
+        'password'     => 'rootpassword',
+        'database'     => 'skjacth_skj',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,

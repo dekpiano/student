@@ -20,8 +20,23 @@ class ControlClub extends BaseController
         // Check if the user is logged in
         if (!$this->session->get('UserId')) {
             // Redirect to the login page if not logged in
+            $this->session->set('redirect_url', current_url());
             header("Location: " . base_url('/login'));
             exit();
+        }
+
+        // Restrict club access to normal students only
+        if ($this->session->get('UserStatus') !== '1/ปกติ') {
+            if ($this->request->isAJAX()) {
+                // If AJAX, return error JSON
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'เฉพาะนักเรียนสถานะปกติเท่านั้นที่สามารถเข้าถึงส่วนนี้ได้']);
+                exit();
+            } else {
+                // If regular request, redirect to Dashboard
+                header("Location: " . base_url('Dashboard'));
+                exit();
+            }
         }
     }
 
@@ -38,24 +53,42 @@ class ControlClub extends BaseController
             $current_academic_year = $current_be_year;
         }
 
-        $registration_period = $this->ModelClub->getActiveRegistrationPeriod($current_academic_year, 'student');
-        
-        $current_year = $registration_period['c_onoff_year'] ?? null;
-        $current_term = $registration_period['c_onoff_term'] ?? null;
-
-        $student_club = null;
+        $student_club = $this->ModelClub->getLatestStudentClub($this->session->get('UserId'));
         $clubs = [];
+        $registration_period = null;
 
-        if ($current_year && $current_term) {
-            $student_club = $this->ModelClub->getStudentClub($this->session->get('UserId'), $current_year, $current_term);
+        if ($student_club) {
+            // If student already in a club, get the registration period for that club's year/term
+            $current_year = $student_club['club_year'];
+            $current_term = $student_club['club_trem'];
+            
+            // Get registration period info for display context (even if closed)
+            $registration_period = $this->db->table('tb_club_onoff')
+                ->where('c_onoff_year', $current_year)
+                ->where('c_onoff_term', $current_term)
+                ->where('c_onoff_for', 'student')
+                ->where('c_onoff_status', 1)
+                ->get()->getRowArray();
 
-            if (
-                !empty($registration_period) &&
-                time() >= strtotime($registration_period['c_onoff_regisstart']) &&
-                time() <= strtotime($registration_period['c_onoff_regisend']) &&
-                empty($student_club)
-            ) {
-                $student_class = $this->session->get('UserClass'); // e.g., 'ม.4/1'
+            // Fetch advisor names for the enrolled club
+            $club_details = $this->ModelClub->getClubDetails($student_club['club_id']);
+            $student_club['advisor_names'] = $club_details['advisor_names'] ?? '-';
+
+        } else {
+            // If not in a club, find the latest available registration settings to show options
+            $registration_period = $this->ModelClub->getLatestRegistrationSettings('student');
+            $current_year = $registration_period['c_onoff_year'] ?? null;
+            $current_term = $registration_period['c_onoff_term'] ?? null;
+        }
+
+        // Registration window check for available clubs (only if not already in a club)
+        if (empty($student_club) && !empty($registration_period)) {
+            $start_time = strtotime($registration_period['c_onoff_regisstart']);
+            $end_time = strtotime($registration_period['c_onoff_regisend']);
+            $now = time();
+
+            if ($now >= $start_time && $now <= $end_time) {
+                $student_class = $this->session->get('UserClass');
                 $level_group = null;
                 if ($student_class) {
                     $grade_parts = explode('/', $student_class);
