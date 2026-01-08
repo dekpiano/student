@@ -101,6 +101,11 @@
             padding-top: 2rem !important;
         }
     }
+    @media (min-width: 768px) {
+        .border-end-md {
+            border-right: 1px solid #eee !important;
+        }
+    }
 </style>
 
 <?php 
@@ -114,7 +119,7 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
     <!-- Header with Background -->
     <div class="grade-header p-5 text-center">
         <h2 class="text-white fw-bold mb-1">ผลการเรียนรายวิชา</h2>
-        <p class="text-white opacity-75 mb-0">ชั้น <?= session()->get('UserClass') ?> | ภาคเรียนที่ <?= $uri->getSegment(2) ?>/<?= $uri->getSegment(3) ?></p>
+        <p class="text-white opacity-75 mb-0">ชั้น <?= session()->get('UserClass') ?> | ภาคเรียนที่ <?= $SelectedYear ?></p>
     </div>
 
     <div class="container-xxl flex-grow-1 container-p-y pt-0">
@@ -134,7 +139,7 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
                                     <select id="defaultSelect" class="form-select border-0 bg-light fw-bold text-center">
                                         <?php foreach ($CheckYearGradeUser as $key => $value):?>
                                         <option
-                                            <?= ($uri->getSegment(2)."/".$uri->getSegment(3)) == $value->RegisterYear ?"selected":""?>
+                                            <?= ($SelectedYear) == $value->RegisterYear ?"selected":""?>
                                             value="<?=$value->RegisterYear;?>"><?=$value->RegisterYear;?></option>
                                         <?php endforeach; ?>
                                     </select>
@@ -147,6 +152,7 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
 
             <?php 
             function compareAcademicYear($a, $b) {
+                if (!$a || !$b) return 0;
                 list($termA, $yearA) = explode('/', $a);
                 list($termB, $yearB) = explode('/', $b);
                 if ($yearA == $yearB) {
@@ -154,23 +160,56 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
                 }
                 return $yearA <=> $yearB;
             }
-            $first = ($uri->getSegment(2)."/".$uri->getSegment(3));
-            $second = $CheckOnoffDoGrade->onoff_year;
-            $Test = (compareAcademicYear($first, $second) <= 0) ? 1 : 0;
+            $Test = (compareAcademicYear($SelectedYear, $CheckOnoffDoGrade->onoff_year) <= 0) ? 1 : 0;
             ?>
 
-            <?php if($Test) : ?>
+            <?php if ($Test) : ?>
+                <?php 
+                    // Calculate Term GPA
+                    $termWeightedPoints = 0;
+                    $termUnits = 0;
+                    foreach ($Geade as $v_Geade) {
+                        if (is_numeric($v_Geade->Grade)) {
+                            $termWeightedPoints += ($v_Geade->Grade * (float)$v_Geade->SubjectUnit);
+                            $termUnits += (float)$v_Geade->SubjectUnit;
+                        }
+                    }
+                    $termGPA = ($termUnits > 0) ? number_format($termWeightedPoints / $termUnits, 2) : '0.00';
+                ?>
+
                 <!-- Summary Stats -->
                 <div class="row justify-content-center mb-5">
-                    <div class="col-12 col-md-8">
-                        <div class="summary-stats d-flex shadow-sm">
-                            <div class="stat-item border-end">
-                                <span class="stat-value" id="totalGradeDisplay">-</span>
-                                <span class="stat-label">เกรดเฉลี่ย (GPA)</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-value" id="totalUnitDisplay">-</span>
-                                <span class="stat-label">หน่วยกิตรวม</span>
+                    <div class="col-12 col-md-10">
+                        <div class="summary-stats shadow-sm">
+                            <div class="row row-cols-2 row-cols-md-4 g-3">
+                                <div class="stat-item border-end-md">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="mb-1 text-primary opacity-50"><i class="bx bx-book-open fs-4"></i></div>
+                                        <span class="stat-value" id="totalGradeDisplay"><?= $termGPA ?></span>
+                                        <span class="stat-label">GPA เทอมนี้</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item border-end-md">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="mb-1 text-info opacity-50"><i class="bx bx-layer fs-4"></i></div>
+                                        <span class="stat-value" id="totalUnitDisplay"><?= number_format($termUnits, 1) ?></span>
+                                        <span class="stat-label">หน่วยกิตเทอมนี้</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item border-end-md">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="mb-1 text-success opacity-50"><i class="bx bx-trending-up fs-4"></i></div>
+                                        <span class="stat-value"><?= $GPAX['stage1']['gpax'] ?: '0.00' ?></span>
+                                        <span class="stat-label">GPAX ม.ต้น (<?= $GPAX['stage1']['term_count'] ?> เทอม)</span>
+                                    </div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="mb-1 text-warning opacity-50"><i class="bx bx-award fs-4"></i></div>
+                                        <span class="stat-value"><?= $GPAX['stage2']['gpax'] ?: '0.00' ?></span>
+                                        <span class="stat-label">GPAX ม.ปลาย (<?= $GPAX['stage2']['term_count'] ?> เทอม)</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -184,7 +223,7 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
                         <div class="d-md-none">
                             <?php foreach ($Geade as $v_Geade) : 
                                 $grade = $v_Geade->Grade;
-                                $badgeClass = 'grade-B'; // Default
+                                $badgeClass = 'grade-B'; 
                                 if (is_numeric($grade)) {
                                     if ($grade >= 4) $badgeClass = 'grade-A';
                                     elseif ($grade >= 3) $badgeClass = 'grade-B';
@@ -200,13 +239,13 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
                                                 <div class="text-muted small mb-1"><?= $v_Geade->SubjectCode ?></div>
                                                 <h6 class="fw-bold mb-1"><?= $v_Geade->SubjectName ?></h6>
                                                 <div class="d-flex align-items-center">
-                                                    <span class="badge bg-label-secondary me-2"><?= explode('/', $v_Geade->SubjectType)[1] ?></span>
+                                                    <span class="badge bg-label-secondary me-2"><?= @explode('/', $v_Geade->SubjectType)[1] ?></span>
                                                     <span class="text-muted small"><?= $v_Geade->SubjectUnit ?> หน่วยกิต</span>
                                                 </div>
                                             </div>
-                                            <div class="ms-3">
+                                            <div class="ms-3 text-center">
                                                 <div class="grade-badge <?= $badgeClass ?> Grade"><?= ($grade !== null && $grade !== '') ? $grade : '-' ?></div>
-                                                <span class="Unit d-none"><?= $v_Geade->SubjectUnit ?></span>
+                                                <span class="text-muted" style="font-size: 0.65rem;">เกรด</span>
                                             </div>
                                         </div>
                                     </div>
@@ -216,7 +255,7 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
 
                         <!-- Desktop View: Table -->
                         <div class="d-none d-md-block">
-                            <div class="card custom-table border-0">
+                            <div class="card custom-table border-0 shadow-sm">
                                 <div class="table-responsive">
                                     <table class="table table-hover mb-0">
                                         <thead>
@@ -233,9 +272,9 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
                                                 <tr>
                                                     <td class="ps-4 text-muted"><?= $v_Geade->SubjectCode ?></td>
                                                     <td class="fw-bold"><?= $v_Geade->SubjectName ?></td>
-                                                    <td class="text-center Unit fw-bold"><?= $v_Geade->SubjectUnit ?></td>
-                                                    <td class="text-center"><span class="badge bg-label-info"><?= explode('/', $v_Geade->SubjectType)[1] ?></span></td>
-                                                    <td class="text-center pe-4 fw-black text-primary h5 mb-0 Grade"><?= $v_Geade->Grade ?></td>
+                                                    <td class="text-center fw-bold"><?= $v_Geade->SubjectUnit ?></td>
+                                                    <td class="text-center"><span class="badge bg-label-info"><?= @explode('/', $v_Geade->SubjectType)[1] ?></span></td>
+                                                    <td class="text-center pe-4 fw-black text-primary h5 mb-0"><?= $v_Geade->Grade ?></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -246,15 +285,14 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
 
                     </div>
                 </div>
-
             <?php else : ?>
                 <div class="text-center py-5">
                     <div class="mb-4">
                         <img src="<?=base_url('uploads/dograd/data-input.svg')?>" alt="Updating" height="200">
                     </div>
-                    <h4 class="fw-bold">กำลังอัปเดตข้อมูล...</h4>
-                    <p class="text-muted">ผลการเรียนปี <?= $uri->getSegment(2)."/".$uri->getSegment(3) ?> กำลังอยู่ระหว่างดำเนินการ</p>
-                    <a href="<?= base_url('Dashboard') ?>" class="btn btn-outline-primary rounded-pill px-4">กลับหน้าหลัก</a>
+                    <h4 class="fw-bold">กำลังประมวลผลข้อมูล...</h4>
+                    <p class="text-muted">ผลการเรียนของภาคเรียนนี้ยังไม่เปิดระบบให้เข้าชม หรือกำลังอยู่ระหว่างการสรุปผลคะแนน</p>
+                    <p class="small text-muted">กรุณาลองเลือกภาคเรียนอื่นๆ จากเมนูจำแนกภาคเรียนด้านบน</p>
                 </div>
             <?php endif; ?>
 
@@ -268,37 +306,13 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
             </div>
         <?php endif; ?>
 
+    <script>
+        document.getElementById('defaultSelect').addEventListener('change', function() {
+            const selectedValue = this.value;
+            if (selectedValue) {
+                window.location.href = "<?= base_url('DoGrade') ?>/" + selectedValue;
+            }
+        });
+    </script>
     </div>
 </div>
-
-<script>
-function calculateStats() {
-    const unitCells = document.querySelectorAll('.Unit');
-    const gradeCells = document.querySelectorAll('.Grade');
-    
-    let totalUnits = 0;
-    let weightedPoints = 0;
-    let validUnitsForGPA = 0;
-
-    unitCells.forEach((cell, index) => {
-        const units = parseFloat(cell.textContent) || 0;
-        const gradeText = gradeCells[index].textContent.trim();
-        
-        totalUnits += units;
-
-        // GPA Calculation: Check if grade is numeric
-        if (!isNaN(parseFloat(gradeText))) {
-            const gradePoints = parseFloat(gradeText);
-            weightedPoints += (units * gradePoints);
-            validUnitsForGPA += units;
-        }
-    });
-
-    const gpa = validUnitsForGPA > 0 ? (weightedPoints / validUnitsForGPA).toFixed(2) : '-';
-    
-    document.getElementById('totalUnitDisplay').textContent = totalUnits.toFixed(1);
-    document.getElementById('totalGradeDisplay').textContent = gpa;
-}
-
-window.addEventListener('load', calculateStats);
-</script>
