@@ -174,7 +174,7 @@ $IfCechkLevel = (in_array($SubClass2[0],$selectedLevels))? true :"";
                             $termUnits += (float)$v_Geade->SubjectUnit;
                         }
                     }
-                    $termGPA = ($termUnits > 0) ? number_format($termWeightedPoints / $termUnits, 2) : '0.00';
+                    $termGPA = ($termUnits > 0) ? number_format(floor(($termWeightedPoints / $termUnits) * 100) / 100, 2) : '0.00';
                 ?>
 
                 <!-- Summary Stats -->

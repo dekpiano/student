@@ -54,7 +54,7 @@ class ModelClub extends Model
 
                             ->where('club_trem', $term)
 
-                            ->where('club_status', 'open');
+                            ->where('club_status !=', 'closed');
 
     
 
@@ -64,13 +64,13 @@ class ModelClub extends Model
 
                 // Junior high students see junior high clubs and clubs for both levels
 
-                $builder->whereIn('club_level', ['ม.ต้น', 'ม.ต้น และ ม.ปลาย']);
+                $builder->whereIn('club_level', ['ม.ต้น', 'ม.ต้น และ ม.ปลาย', 'ม.ต้น หรือ ม.ปลาย']);
 
             } elseif ($level_group === 'senior') {
 
                 // Senior high students see senior high clubs and clubs for both levels
 
-                $builder->whereIn('club_level', ['ม.ปลาย', 'ม.ต้น และ ม.ปลาย']);
+                $builder->whereIn('club_level', ['ม.ปลาย', 'ม.ต้น และ ม.ปลาย', 'ม.ต้น หรือ ม.ปลาย']);
 
             }
 
@@ -157,6 +157,40 @@ class ModelClub extends Model
             ->orderBy('c.club_year', 'DESC')
             ->orderBy('c.club_trem', 'DESC')
             ->get()->getRowArray();
+    }
+
+    // Get all active club membership history for a student
+    public function getStudentClubHistory($student_id)
+    {
+        $clubs = $this->db->table('tb_club_members cm')
+            ->join('tb_clubs c', 'c.club_id = cm.member_club_id')
+            ->where('cm.member_student_id', $student_id)
+            ->where('cm.member_status', 'active')
+            ->orderBy('c.club_year', 'DESC')
+            ->orderBy('c.club_trem', 'DESC')
+            ->get()->getResultArray();
+
+        if (empty($clubs)) {
+            return [];
+        }
+
+        // Get advisor names
+        $personnel_db = \Config\Database::connect('personnel');
+        $all_personnel = $personnel_db->table('tb_personnel')->get()->getResultArray();
+        $personnel_map = array_column($all_personnel, 'pers_firstname', 'pers_id');
+
+        foreach ($clubs as &$club) {
+            $advisor_ids = explode('|', $club['club_faculty_advisor']);
+            $advisor_names = [];
+            foreach ($advisor_ids as $id) {
+                if (isset($personnel_map[$id])) {
+                    $advisor_names[] = $personnel_map[$id];
+                }
+            }
+            $club['advisor_names'] = implode(', ', $advisor_names);
+        }
+
+        return $clubs;
     }
 
     // Add a student to a club

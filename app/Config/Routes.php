@@ -8,7 +8,9 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'Home::index');
 
 $routes->match(['get', 'post'],'Login', 'ControlLogin::loginProcess');
+$routes->match(['get', 'post'],'login', 'ControlLogin::loginProcess');
 $routes->match(['get', 'post'],'Logout', 'ControlLogin::logout');
+$routes->match(['get', 'post'],'logout', 'ControlLogin::logout');
 
 $routes->get('Dashboard', 'ControlDashboard::index');
 $routes->get('DoGrade', 'ControlDoGrade::index');

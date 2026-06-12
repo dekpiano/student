@@ -112,10 +112,10 @@ class ControlDoGrade extends BaseController
         }
 
         if ($gpax['stage1']['unit_sum'] > 0) {
-            $gpax['stage1']['gpax'] = number_format($gpax['stage1']['weighted_sum'] / $gpax['stage1']['unit_sum'], 2);
+            $gpax['stage1']['gpax'] = number_format(floor(($gpax['stage1']['weighted_sum'] / $gpax['stage1']['unit_sum']) * 100) / 100, 2);
         }
         if ($gpax['stage2']['unit_sum'] > 0) {
-            $gpax['stage2']['gpax'] = number_format($gpax['stage2']['weighted_sum'] / $gpax['stage2']['unit_sum'], 2);
+            $gpax['stage2']['gpax'] = number_format(floor(($gpax['stage2']['weighted_sum'] / $gpax['stage2']['unit_sum']) * 100) / 100, 2);
         }
 
         $gpax['stage1']['term_count'] = count($gpax['stage1']['terms']);

@@ -42,52 +42,30 @@ class ControlClub extends BaseController
 
     public function index()
     {
-        // Calculate current academic year (Buddhist Era)
-        $current_calendar_year = (int)date('Y');
-        $current_month = (int)date('m');
-        $current_be_year = $current_calendar_year + 543;
+        // 1. Get the system active configuration settings
+        $active_config = $this->ModelClub->getLatestRegistrationSettings('active_config');
+        $current_year = $active_config['c_onoff_year'] ?? null;
+        $current_term = $active_config['c_onoff_term'] ?? null;
 
-        if ($current_month >= 1 && $current_month <= 4) { // Jan - Apr
-            $current_academic_year = $current_be_year - 1;
-        } else { // May - Dec
-            $current_academic_year = $current_be_year;
-        }
+        // 2. Use active_config as the registration period settings directly
+        $registration_period = $active_config;
 
-        $student_club = $this->ModelClub->getLatestStudentClub($this->session->get('UserId'));
+        // Fetch the student's overall latest active club registration (for history/previous year info)
+        $latest_student_club = $this->ModelClub->getLatestStudentClub($this->session->get('UserId'));
+
+        $student_club = null;
         $clubs = [];
-        $registration_period = null;
 
-        if ($student_club) {
-            // If student already in a club, get the registration period for that club's year/term
-            $current_year = $student_club['club_year'];
-            $current_term = $student_club['club_trem'];
-            
-            // Get registration period info for display context (even if closed)
-            $registration_period = $this->db->table('tb_club_onoff')
-                ->where('c_onoff_year', $current_year)
-                ->where('c_onoff_term', $current_term)
-                ->where('c_onoff_for', 'student')
-                ->where('c_onoff_status', 1)
-                ->get()->getRowArray();
+        if ($current_year && $current_term) {
+            // 2. Check if the student has already joined a club in this current term/year
+            $student_club = $this->ModelClub->getStudentClub($this->session->get('UserId'), $current_year, $current_term);
 
-            // Fetch advisor names for the enrolled club
-            $club_details = $this->ModelClub->getClubDetails($student_club['club_id']);
-            $student_club['advisor_names'] = $club_details['advisor_names'] ?? '-';
-
-        } else {
-            // If not in a club, find the latest available registration settings to show options
-            $registration_period = $this->ModelClub->getLatestRegistrationSettings('student');
-            $current_year = $registration_period['c_onoff_year'] ?? null;
-            $current_term = $registration_period['c_onoff_term'] ?? null;
-        }
-
-        // Registration window check for available clubs (only if not already in a club)
-        if (empty($student_club) && !empty($registration_period)) {
-            $start_time = strtotime($registration_period['c_onoff_regisstart']);
-            $end_time = strtotime($registration_period['c_onoff_regisend']);
-            $now = time();
-
-            if ($now >= $start_time && $now <= $end_time) {
+            if ($student_club) {
+                // Fetch advisor names for the enrolled club
+                $club_details = $this->ModelClub->getClubDetails($student_club['club_id']);
+                $student_club['advisor_names'] = $club_details['advisor_names'] ?? '-';
+            } else {
+                // 3. If they haven't joined, fetch available clubs for preview and selection
                 $student_class = $this->session->get('UserClass');
                 $level_group = null;
                 if ($student_class) {
@@ -105,10 +83,16 @@ class ControlClub extends BaseController
             }
         }
 
+        $student_club_history = $this->ModelClub->getStudentClubHistory($this->session->get('UserId'));
+
         $data = [
             'title' => 'เลือกชุมนุม',
             'registration_period' => $registration_period,
+            'current_year' => $current_year,
+            'current_term' => $current_term,
             'student_club' => $student_club,
+            'latest_student_club' => $latest_student_club,
+            'student_club_history' => $student_club_history,
             'clubs' => $clubs,
             'uri' => service('uri'),
         ];
@@ -153,20 +137,11 @@ class ControlClub extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'ไม่พบรหัสชุมนุม']);
         }
 
-        // Calculate current academic year (Buddhist Era)
-        $current_calendar_year = (int)date('Y');
-        $current_month = (int)date('m');
-        $current_be_year = $current_calendar_year + 543;
+        $active_config = $this->ModelClub->getLatestRegistrationSettings('active_config');
+        $current_year = $active_config['c_onoff_year'] ?? null;
+        $current_term = $active_config['c_onoff_term'] ?? null;
 
-        if ($current_month >= 1 && $current_month <= 4) { // Jan - Apr
-            $current_academic_year = $current_be_year - 1;
-        } else { // May - Dec
-            $current_academic_year = $current_be_year;
-        }
-
-        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod($current_academic_year, 'student');
-        $current_year = $active_reg_period['c_onoff_year'] ?? null;
-        $current_term = $active_reg_period['c_onoff_term'] ?? null;
+        $active_reg_period = $active_config;
         $student_id = $this->session->get('UserId');
 
         // 1. Check registration period
@@ -210,27 +185,13 @@ class ControlClub extends BaseController
             return $this->response->setJSON(['success' => false, 'message' => 'ไม่พบรหัสชุมนุม']);
         }
 
-        // Calculate current academic year (Buddhist Era)
-        $current_calendar_year = (int)date('Y');
-        $current_month = (int)date('m');
-        $current_be_year = $current_calendar_year + 543;
+        $active_config = $this->ModelClub->getLatestRegistrationSettings('active_config');
+        $current_year = $active_config['c_onoff_year'] ?? null;
+        $current_term = $active_config['c_onoff_term'] ?? null;
 
-        if ($current_month >= 1 && $current_month <= 4) { // Jan - Apr
-            $current_academic_year = $current_be_year - 1;
-        } else { // May - Dec
-            $current_academic_year = $current_be_year;
-        }
+        $active_reg_period = $active_config;
 
-        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod($current_academic_year, 'student');
         $student_id = $this->session->get('UserId');
-
-        // Check registration period
-        if (empty($active_reg_period)) {
-            return $this->response->setJSON(['success' => false, 'message' => 'ไม่อยู่ในช่วงเวลาที่สามารถยกเลิกชุมนุมได้']);
-        }
-
-        $current_year = $active_reg_period['c_onoff_year'];
-        $current_term = $active_reg_period['c_onoff_term'];
 
         // Check change count limit
         $change_count = $this->ModelClub->getChangeCount($student_id, $current_year, $current_term);
@@ -290,25 +251,11 @@ class ControlClub extends BaseController
 
         $student_id = $this->session->get('UserId');
         
-        // Calculate current academic year (Buddhist Era)
-        $current_calendar_year = (int)date('Y');
-        $current_month = (int)date('m');
-        $current_be_year = $current_calendar_year + 543;
+        $active_config = $this->ModelClub->getLatestRegistrationSettings('active_config');
+        $current_year = $active_config['c_onoff_year'] ?? null;
+        $current_term = $active_config['c_onoff_term'] ?? null;
 
-        if ($current_month >= 1 && $current_month <= 4) { // Jan - Apr
-            $current_academic_year = $current_be_year - 1;
-        } else { // May - Dec
-            $current_academic_year = $current_be_year;
-        }
-
-        $active_reg_period = $this->ModelClub->getActiveRegistrationPeriod($current_academic_year, 'student');
-
-        if (empty($active_reg_period)) {
-            return $this->response->setJSON(['success' => false, 'message' => 'ไม่อยู่ในช่วงเวลาการลงทะเบียน', 'remaining_changes' => 0]);
-        }
-
-        $current_year = $active_reg_period['c_onoff_year'];
-        $current_term = $active_reg_period['c_onoff_term'];
+        $active_reg_period = $active_config;
 
         $change_count = $this->ModelClub->getChangeCount($student_id, $current_year, $current_term);
         $remaining_changes = 2 - $change_count;
