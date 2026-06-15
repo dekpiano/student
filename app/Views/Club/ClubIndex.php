@@ -912,7 +912,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     cancelButtonText: 'กลับหน้าเดิม'
                 }).then((result) => {
                     if (result.isConfirmed && remainingChanges > 0) {
-                        fetch('<?= base_url('club/cancelClub') ?>', {
+                        fetch('<?= base_url('club/cancel') ?>', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
