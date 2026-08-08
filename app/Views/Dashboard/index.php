@@ -91,7 +91,10 @@
 
         <!-- Club Activities Card -->
         <div class="col-12 col-md-6">
-            <?php $isNormal = (session()->get('UserStatus') === '1/ปกติ'); ?>
+            <?php 
+                $userStatusStr = (string)session()->get('UserStatus');
+                $isNormal = ($userStatusStr === '1/ปกติ' || strpos($userStatusStr, 'ปกติ') !== false); 
+            ?>
             <div class="card action-card h-100 <?= !$isNormal ? 'opacity-75' : '' ?>">
                 <div class="card-body p-4 p-md-5 d-flex flex-column h-100">
                     <div class="card-icon bg-label-success">
@@ -100,7 +103,7 @@
                     <div class="d-flex align-items-center mb-2">
                         <h4 class="fw-bold mb-0">กิจกรรมชุมนุม</h4>
                         <?php if (!$isNormal): ?>
-                            <span class="badge bg-label-danger ms-2"><i class="bx bx-lock-alt"></i></span>
+                            <span class="badge bg-label-danger ms-2"><i class="bx bx-lock-alt"></i> ล็อก</span>
                         <?php endif; ?>
                     </div>
                     
@@ -110,9 +113,11 @@
                             <i class="bx bx-run me-2"></i>เข้าสู่หน้าชุมนุม
                         </a>
                     <?php else: ?>
-                        <p class="text-danger fw-600 mb-4 flex-grow-1">ไม่อนุญาตให้เข้าใช้งาน เนื่องจากสถานะนักเรียนไม่ได้เป็น "ปกติ"</p>
-                        <button class="btn btn-secondary btn-lg w-100" disabled>
-                            <i class="bx bx-lock-alt me-2"></i>ไม่สามารถเข้าใช้ได้
+                        <p class="text-danger fw-semibold mb-4 flex-grow-1">
+                            <i class="bx bx-error-circle me-1"></i>ไม่อนุญาตให้เข้าใช้งาน เนื่องจากสถานะนักเรียนไม่ได้เป็น "ปกติ"
+                        </p>
+                        <button class="btn btn-outline-danger btn-lg w-100" onclick="showClubAccessAlert('<?= esc($userStatusStr) ?>')">
+                            <i class="bx bx-lock-alt me-2"></i>ไม่สามารถเข้าใช้ได้ (กดอ่านสาเหตุ)
                         </button>
                     <?php endif; ?>
                 </div>
@@ -128,3 +133,31 @@
     </div>
 </div>
 <!-- / Content -->
+
+<!-- SweetAlert Library & Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function showClubAccessAlert(status) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'ไม่สามารถเข้าใช้งานกิจกรรมชุมนุมได้',
+            html: '<div class="text-start mb-3">เฉพาะนักเรียนที่มีสถานะ <b>"ปกติ"</b> เท่านั้นที่สามารถเข้าใช้งานระบบลงทะเบียนชุมนุมได้</div>' +
+                  '<div class="alert alert-danger mb-0 small text-start"><i class="bx bx-info-circle me-1"></i> <b>สถานะปัจจุบันของคุณ:</b> ' + (status || 'ไม่ระบุ') + '<br>กรุณาติดต่อครูประจำชั้นหรือฝ่ายงานทะเบียนเพื่อปรับเปลี่ยนสถานะนักเรียน</div>',
+            confirmButtonText: 'เข้าใจแล้ว',
+            confirmButtonColor: '#e83e8c'
+        });
+    }
+
+    <?php if (session()->getFlashdata('club_error')): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'ไม่สามารถเข้าใช้งานกิจกรรมชุมนุมได้',
+                html: '<div class="text-start mb-2"><?= esc(session()->getFlashdata('club_error')) ?></div>' +
+                      '<div class="alert alert-info mb-0 small text-start"><i class="bx bx-info-circle me-1"></i> กรุณาติดต่อครูประจำชั้นหรือฝ่ายงานทะเบียนเพื่อตรวจสอบสถานะนักเรียน</div>',
+                confirmButtonText: 'เข้าใจแล้ว',
+                confirmButtonColor: '#e83e8c'
+            });
+        });
+    <?php endif; ?>
+</script>

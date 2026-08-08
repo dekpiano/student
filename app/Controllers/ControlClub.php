@@ -17,6 +17,8 @@ class ControlClub extends BaseController
         $this->ModelClub = new ModelClub();
         $this->db = \Config\Database::connect();
 
+        $request = service('request');
+
         // Check if the user is logged in
         if (!$this->session->get('UserId')) {
             // Redirect to the login page if not logged in
@@ -26,14 +28,16 @@ class ControlClub extends BaseController
         }
 
         // Restrict club access to normal students only
-        if ($this->session->get('UserStatus') !== '1/ปกติ') {
-            if ($this->request->isAJAX()) {
+        $userStatus = (string)$this->session->get('UserStatus');
+        if (trim($userStatus) !== '1/ปกติ' && strpos($userStatus, 'ปกติ') === false) {
+            if ($request->isAJAX()) {
                 // If AJAX, return error JSON
                 header('Content-Type: application/json');
                 echo json_encode(['success' => false, 'message' => 'เฉพาะนักเรียนสถานะปกติเท่านั้นที่สามารถเข้าถึงส่วนนี้ได้']);
                 exit();
             } else {
-                // If regular request, redirect to Dashboard
+                // Set flashdata alert for Dashboard
+                $this->session->setFlashdata('club_error', 'เฉพาะนักเรียนที่มีสถานะ "ปกติ" เท่านั้นที่สามารถเข้าใช้งานระบบกิจกรรมชุมนุมได้ (สถานะปัจจุบันของคุณ: ' . ($userStatus ?: 'ไม่ระบุ') . ')');
                 header("Location: " . base_url('Dashboard'));
                 exit();
             }

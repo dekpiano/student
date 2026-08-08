@@ -45,14 +45,24 @@ class ControlDoGrade extends BaseController
         ->orderBy("SUBSTRING_INDEX(RegisterYear, '/', 1) DESC", '', false)
         ->get()->getResult();
 
+        // Handle single-parameter URL patterns like DoGrade/2569 or DoGrade/1/2569
+        if ($Term !== null && strpos($Term, '/') !== false) {
+            list($Term, $Year) = explode('/', $Term, 2);
+        } elseif ($Term !== null && is_numeric($Term) && strlen($Term) === 4 && $Year === null) {
+            $Year = $Term;
+            $Term = null;
+        }
+
         // Default to latest year if not specified
         if ($Term === null || $Year === null) {
             if (!empty($data['CheckYearGradeUser'])) {
-                list($Term, $Year) = explode('/', $data['CheckYearGradeUser'][0]->RegisterYear);
+                list($defaultTerm, $defaultYear) = explode('/', $data['CheckYearGradeUser'][0]->RegisterYear);
+                $Term = $Term ?? $defaultTerm;
+                $Year = $Year ?? $defaultYear;
             } else {
                 // Fallback to settings if no grades yet
-                $Term = $data['CheckOnoffDoGrade']->onoff_term ?? '1';
-                $Year = $data['CheckOnoffDoGrade']->onoff_year ?? date('Y') + 543;
+                $Term = $Term ?? ($data['CheckOnoffDoGrade']->onoff_term ?? '1');
+                $Year = $Year ?? ($data['CheckOnoffDoGrade']->onoff_year ?? date('Y') + 543);
             }
         }
 

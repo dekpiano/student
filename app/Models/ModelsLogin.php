@@ -8,7 +8,7 @@ class ModelsLogin extends Model
 {
     protected $table = 'tb_students';
     protected $primaryKey = 'StudentID';
-    protected $allowedFields = ['username', 'password', 'StudentPassword', 'StudentCode', 'StudentIDNumber'];
+    protected $allowedFields = ['username', 'password', 'StudentPassword', 'StudentCode', 'StudentIDNumber', 'StudentEmail', 'StudentEmailPassword', 'StudentEmailResetCount', 'StudentEmailResetAt'];
     protected $beforeInsert = ['hashPassword'];
 
     protected function hashPassword(array $data)
