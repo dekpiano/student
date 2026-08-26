@@ -117,9 +117,16 @@ nb-configuration.xml
 *.sublime-workspace
 *.sublime-project
 .phpintel
-# Google Service Account Keys
+# Google Service Account Keys & Secrets
 google_service_account.json
 quickstart-*.json
-writable/keys/*.json
+writable/keys/*
+!writable/keys/index.html
+!writable/keys/.gitkeep
+keys/
 *.json.key
+*.pem
+*.p12
+*.pfx
+*.key
 
