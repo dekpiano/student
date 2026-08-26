@@ -22,16 +22,29 @@ class GoogleWorkspaceService
         $envAdminEmail = getenv('GOOGLE_ADMIN_EMAIL') ?: 'dekpiano@skj.ac.th';
         $this->adminEmail = $envAdminEmail;
 
+        // Ensure Composer autoloader is loaded if not already
+        if (!class_exists('Google_Client') && !class_exists('\Google\Client')) {
+            if (is_file(ROOTPATH . 'vendor/autoload.php')) {
+                require_once ROOTPATH . 'vendor/autoload.php';
+            } elseif (defined('COMPOSER_PATH') && is_file(COMPOSER_PATH)) {
+                require_once COMPOSER_PATH;
+            }
+        }
+
         // Check multiple possible key file locations
         $possiblePaths = [
+            ROOTPATH . 'google_service_account.json',
+            ROOTPATH . 'keys/google_service_account.json',
+            APPPATH . 'Config/google_service_account.json',
             WRITEPATH . 'keys/google_service_account.json',
             WRITEPATH . 'google_service_account.json',
-            ROOTPATH . 'google_service_account.json',
         ];
 
-        // Also check for any quickstart-*.json in root or writable/keys
+        // Also check for any quickstart-*.json in root or writable/keys or keys/
         $globQuickstart = array_merge(
             glob(ROOTPATH . 'quickstart-*.json') ?: [],
+            glob(ROOTPATH . 'keys/quickstart-*.json') ?: [],
+            glob(APPPATH . 'Config/quickstart-*.json') ?: [],
             glob(WRITEPATH . 'keys/quickstart-*.json') ?: []
         );
         foreach ($globQuickstart as $qp) {
@@ -45,14 +58,27 @@ class GoogleWorkspaceService
             }
         }
 
-        if ($this->keyFilePath && class_exists('Google_Client')) {
+        $hasGoogleClient = class_exists('Google_Client') || class_exists('\Google\Client');
+
+        if (!$this->keyFilePath) {
+            $this->lastError = 'ไม่พบไฟล์คีย์ Service Account (google_service_account.json)';
+            $this->isConfigured = false;
+        } elseif (!$hasGoogleClient) {
+            $this->lastError = 'ไม่พบคลาส Google Client (google/apiclient ใน vendor)';
+            $this->isConfigured = false;
+        } else {
             try {
                 $jsonContent = json_decode(file_get_contents($this->keyFilePath), true);
                 if (!$jsonContent || !isset($jsonContent['client_email']) || !isset($jsonContent['private_key'])) {
                     throw new \Exception("ไฟล์ JSON Key ไม่ถูกต้องหรือขาดข้อมูล client_email / private_key");
                 }
 
-                $this->client = new Google_Client();
+                if (class_exists('Google_Client')) {
+                    $this->client = new Google_Client();
+                } else {
+                    $this->client = new \Google\Client();
+                }
+
                 // Disable file cache to avoid container permission issues
                 if (class_exists('Google_Cache_Null')) {
                     $this->client->setCache(new \Google_Cache_Null($this->client));
@@ -76,7 +102,11 @@ class GoogleWorkspaceService
                     $this->client->setSubject($this->adminEmail);
                 }
 
-                $this->service = new Google_Service_Directory($this->client);
+                if (class_exists('Google_Service_Directory')) {
+                    $this->service = new Google_Service_Directory($this->client);
+                } else {
+                    $this->service = new \Google\Service\Directory($this->client);
+                }
                 $this->isConfigured = true;
             } catch (\Exception $e) {
                 if (function_exists('log_message')) {

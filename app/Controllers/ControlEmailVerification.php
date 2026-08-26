@@ -102,6 +102,13 @@ class ControlEmailVerification extends BaseController
                     ]
                 ]);
             }
+
+            // ถ้าบัญชีนี้มีอยู่ใน Google Workspace อยู่แล้ว
+            // ไม่ควรนำรหัสผ่านที่เพิ่งสุ่มมาแสดงให้ผู้ใช้เห็น เพราะ Google ไม่ได้ถูกอัปเดตรหัสผ่านนี้
+            if (!empty($googleResult['already_exists'])) {
+                $isNew = false;
+                $emailPassword = null;
+            }
         } else {
             $googleResult = [
                 'success' => true,
