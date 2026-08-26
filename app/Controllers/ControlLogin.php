@@ -44,6 +44,16 @@ class ControlLogin extends BaseController
         }
 
         if ($passwordCorrect) {
+            // Check student status: only active students ("1/ปกติ" or status containing "ปกติ") can login
+            $userStatus = (string)($user['StudentStatus'] ?? '');
+            if (trim($userStatus) !== '1/ปกติ' && strpos($userStatus, 'ปกติ') === false) {
+                $statusDesc = !empty($userStatus) ? $userStatus : 'ไม่มีสถานะกำลังศึกษาอยู่';
+                return $this->response->setJSON([
+                    'status'  => 0,
+                    'message' => 'ไม่สามารถเข้าสู่ระบบได้ เนื่องจากบัญชีของคุณมีสถานะ "' . $statusDesc . '" (อนุญาตเฉพาะนักเรียนที่มีสถานะกำลังศึกษาอยู่เท่านั้น)'
+                ]);
+            }
+
             $schYear = $CheckYearNow ? $CheckYearNow->schyear_year : date('Y') + 543;
 
             $sessionData = [
@@ -136,6 +146,16 @@ class ControlLogin extends BaseController
             return $this->response->setJSON([
                 'status'  => 0,
                 'message' => 'ไม่พบข้อมูลนักเรียนสำหรับอีเมล ' . $email . ' ในระบบ (กรุณาใช้อีเมลโรงเรียน @skj.ac.th หรือหากลืมรหัสผ่าน ให้กดปุ่ม "รีเซ็ตรหัสผ่าน")'
+            ]);
+        }
+
+        // Check student status: only active students ("1/ปกติ" or status containing "ปกติ") can login
+        $userStatus = (string)($user['StudentStatus'] ?? '');
+        if (trim($userStatus) !== '1/ปกติ' && strpos($userStatus, 'ปกติ') === false) {
+            $statusDesc = !empty($userStatus) ? $userStatus : 'ไม่มีสถานะกำลังศึกษาอยู่';
+            return $this->response->setJSON([
+                'status'  => 0,
+                'message' => 'ไม่สามารถเข้าสู่ระบบได้ เนื่องจากบัญชีของคุณมีสถานะ "' . $statusDesc . '" (อนุญาตเฉพาะนักเรียนที่มีสถานะกำลังศึกษาอยู่เท่านั้น)'
             ]);
         }
 

@@ -197,7 +197,7 @@ class GoogleWorkspaceService
             return [
                 'success' => false,
                 'google_created' => false,
-                'message' => 'เกิดข้อผิดพลาดในการสร้างบัญชีผ่าน Google API: ' . $errorMessage
+                'message' => 'เกิดข้อผิดพลาดในการสร้างบัญชีผ่าน Google API: ' . $this->formatGoogleErrorMessage($errorMessage)
             ];
         }
     }
@@ -240,7 +240,7 @@ class GoogleWorkspaceService
 
             return [
                 'success' => false,
-                'message' => 'เกิดข้อผิดพลาดในการอัปเดตชื่อผ่าน Google API: ' . $errorMessage
+                'message' => 'เกิดข้อผิดพลาดในการอัปเดตชื่อผ่าน Google API: ' . $this->formatGoogleErrorMessage($errorMessage)
             ];
         }
     }
@@ -278,8 +278,25 @@ class GoogleWorkspaceService
 
             return [
                 'success' => false,
-                'message' => 'เกิดข้อผิดพลาดในการรีเซ็ตรหัสผ่าน Google API: ' . $errorMessage
+                'message' => 'เกิดข้อผิดพลาดในการรีเซ็ตรหัสผ่าน Google API: ' . $this->formatGoogleErrorMessage($errorMessage)
             ];
         }
+    }
+
+    /**
+     * Format Google API error messages to human readable Thai explanations
+     */
+    protected function formatGoogleErrorMessage(string $rawError): string
+    {
+        if (strpos($rawError, 'invalid_grant') !== false || strpos($rawError, 'Invalid signature') !== false) {
+            return 'กุญแจเชื่อมต่อ Google API (Service Account Key) ไม่ถูกต้องหรือถูกสร้างใหม่ใน Google Cloud แล้ว กรุณาอัปเดตไฟล์ google_service_account.json';
+        }
+        if (strpos($rawError, 'unauthorized_client') !== false) {
+            return 'Service Account ยังไม่ได้รับสิทธิ์ Domain-Wide Delegation ใน Google Workspace Admin Console';
+        }
+        if (strpos($rawError, 'access_denied') !== false || strpos($rawError, '403') !== false) {
+            return 'ไม่มีสิทธิ์เข้าถึงหรือจัดการบัญชีผู้ใช้ใน Google Workspace (Error 403: Forbidden)';
+        }
+        return $rawError;
     }
 }

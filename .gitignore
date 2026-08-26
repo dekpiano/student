@@ -117,12 +117,9 @@ nb-configuration.xml
 *.sublime-workspace
 *.sublime-project
 .phpintel
-/api/
-
-# Visual Studio Code
-.vscode/
-
-/results/
-/phpunit*.xml
-/.phpunit.*.cache
+# Google Service Account Keys
+google_service_account.json
+quickstart-*.json
+writable/keys/*.json
+*.json.key
 

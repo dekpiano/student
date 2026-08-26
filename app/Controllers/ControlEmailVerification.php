@@ -15,6 +15,11 @@ class ControlEmailVerification extends BaseController
         return view('EmailVerification/email_verify_index', $data);
     }
 
+    public function guide()
+    {
+        return view('guide_index');
+    }
+
     public function verifyAndGetEmail()
     {
         $studentCode = trim($this->request->getPost('student_code') ?? '');
@@ -39,6 +44,16 @@ class ControlEmailVerification extends BaseController
             ]);
         }
 
+        // Check student status: only active students ("1/ปกติ" or status containing "ปกติ") can verify email
+        $userStatus = (string)($student['StudentStatus'] ?? '');
+        if (trim($userStatus) !== '1/ปกติ' && strpos($userStatus, 'ปกติ') === false) {
+            $statusDesc = !empty($userStatus) ? $userStatus : 'ไม่มีสถานะกำลังศึกษาอยู่';
+            return $this->response->setJSON([
+                'status'  => 0,
+                'message' => 'ไม่สามารถดำเนินการได้ เนื่องจากบัญชีของคุณมีสถานะ "' . $statusDesc . '" (อนุญาตเฉพาะนักเรียนที่มีสถานะกำลังศึกษาอยู่เท่านั้น)'
+            ]);
+        }
+
         $isNew = false;
         $email = $student['StudentEmail'] ?? null;
         $emailPassword = $student['StudentEmailPassword'] ?? null;
@@ -53,12 +68,6 @@ class ControlEmailVerification extends BaseController
         if (empty($emailPassword)) {
             $emailPassword = 'Skj@' . substr(str_shuffle('23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ'), 0, 6);
         }
-
-        // Save email and generated password to database
-        $model->update($student['StudentID'], [
-            'StudentEmail'         => $email,
-            'StudentEmailPassword' => $emailPassword
-        ]);
 
         $firstName = $student['StudentFirstName'] ?? 'Student';
         $lastName = $student['StudentLastName'] ?? $studentCode;
@@ -83,6 +92,16 @@ class ControlEmailVerification extends BaseController
                 $student['StudentClass'] ?? '',
                 $student['StudentNumber'] ?? 0
             );
+
+            if (!$googleResult['success'] && empty($googleResult['already_exists'])) {
+                return $this->response->setJSON([
+                    'status'  => 0,
+                    'message' => 'ไม่สามารถสร้างบัญชีใน Google Workspace ได้: ' . ($googleResult['message'] ?? 'เกิดข้อผิดพลาดในการเชื่อมต่อ Google API'),
+                    'data'    => [
+                        'google_status' => $googleResult
+                    ]
+                ]);
+            }
         } else {
             $googleResult = [
                 'success' => true,
@@ -91,6 +110,12 @@ class ControlEmailVerification extends BaseController
                 'message' => 'มีบัญชีผู้ใช้นี้ใน Google Workspace แล้ว'
             ];
         }
+
+        // Save email and generated password to database after API validation
+        $model->update($student['StudentID'], [
+            'StudentEmail'         => $email,
+            'StudentEmailPassword' => $emailPassword
+        ]);
 
         return $this->response->setJSON([
             'status'  => 1,
@@ -135,6 +160,16 @@ class ControlEmailVerification extends BaseController
             ]);
         }
 
+        // Check student status: only active students ("1/ปกติ" or status containing "ปกติ") can reset password
+        $userStatus = (string)($student['StudentStatus'] ?? '');
+        if (trim($userStatus) !== '1/ปกติ' && strpos($userStatus, 'ปกติ') === false) {
+            $statusDesc = !empty($userStatus) ? $userStatus : 'ไม่มีสถานะกำลังศึกษาอยู่';
+            return $this->response->setJSON([
+                'status'  => 0,
+                'message' => 'ไม่สามารถดำเนินการได้ เนื่องจากบัญชีของคุณมีสถานะ "' . $statusDesc . '" (อนุญาตเฉพาะนักเรียนที่มีสถานะกำลังศึกษาอยู่เท่านั้น)'
+            ]);
+        }
+
         $email = $student['StudentEmail'] ?? null;
         if (empty($email)) {
             $email = 'skj' . $studentCode . '@skj.ac.th';
@@ -147,14 +182,6 @@ class ControlEmailVerification extends BaseController
         $currentResetCount = (int)($student['StudentEmailResetCount'] ?? 0);
         $newResetCount = $currentResetCount + 1;
 
-        // Update in database
-        $model->update($student['StudentID'], [
-            'StudentEmail'         => $email,
-            'StudentEmailPassword' => $newPassword,
-            'StudentEmailResetCount' => $newResetCount,
-            'StudentEmailResetAt'    => date('Y-m-d H:i:s')
-        ]);
-
         $firstName = $student['StudentFirstName'] ?? 'Student';
         $lastName = $student['StudentLastName'] ?? $studentCode;
         $fullName = trim(($student['StudentPrefix'] ?? '') . $firstName . ' ' . $lastName);
@@ -165,8 +192,40 @@ class ControlEmailVerification extends BaseController
 
         // If user didn't exist in Google yet, try creating it
         if (!$googleResult['success'] && (strpos($googleResult['message'], '404') !== false || strpos($googleResult['message'], 'Resource Not Found') !== false)) {
-            $googleResult = $googleService->createUser($email, $firstName, $lastName, $newPassword);
+            $dbAca = \Config\Database::connect('default');
+            $schYearRow = $dbAca->table('tb_schoolyear')->orderBy('schyear_year', 'DESC')->get()->getRow();
+            $dbYear = $schYearRow ? (int)$schYearRow->schyear_year : 0;
+            $schYear = max($dbYear, (int)date('Y') + 543);
+
+            $googleResult = $googleService->createUser(
+                $email,
+                $firstName,
+                $lastName,
+                $newPassword,
+                $schYear,
+                $student['StudentClass'] ?? '',
+                $student['StudentNumber'] ?? 0
+            );
         }
+
+        // Check if Google Workspace operation actually succeeded
+        if (!$googleResult['success']) {
+            return $this->response->setJSON([
+                'status'  => 0,
+                'message' => 'ไม่สามารถเปลี่ยนรหัสผ่านใน Google Workspace ได้: ' . ($googleResult['message'] ?? 'เกิดข้อผิดพลาดในการเชื่อมต่อ Google API กรุณาติดต่อผู้ดูแลระบบ'),
+                'data'    => [
+                    'google_status' => $googleResult
+                ]
+            ]);
+        }
+
+        // Only update in database when Google Workspace API succeeded
+        $model->update($student['StudentID'], [
+            'StudentEmail'           => $email,
+            'StudentEmailPassword'   => $newPassword,
+            'StudentEmailResetCount' => $newResetCount,
+            'StudentEmailResetAt'    => date('Y-m-d H:i:s')
+        ]);
 
         return $this->response->setJSON([
             'status'  => 1,

@@ -576,11 +576,15 @@
                 </a>
             </div>
 
-            <!-- Read Details Button (Why Google Account) -->
-            <div class="mt-3 text-center">
+            <!-- Read Details Button (Why Google Account) & User Guide -->
+            <div class="mt-3 d-flex flex-column gap-2 text-center">
+                <a href="<?= base_url('guide') ?>" class="btn btn-outline-danger w-100 shadow-sm rounded-3 fw-bold py-2">
+                    <i class="bx bx-book-open fs-5 me-1 align-middle"></i>
+                    <span>คู่มือการใช้งาน & การใช้อีเมลโรงเรียน (@skj.ac.th)</span>
+                </a>
                 <button type="button" class="btn btn-why-google w-100 shadow-sm" data-bs-toggle="modal"
                     data-bs-target="#modalWhyGoogle">
-                    <i class="bx bx-book-open text-primary fs-6"></i>
+                    <i class="bx bx-info-circle text-primary fs-6"></i>
                     <span>ทำไมต้องเข้าสู่ระบบด้วย Google? (อ่านรายละเอียด)</span>
                 </button>
             </div>

@@ -31,8 +31,9 @@ $routes->get('club/results-summary', 'ControlClub::getResultsSummary');
 $routes->get('club/attendance-summary/(:num)/(:num)', 'ControlClub::getAttendanceSummary/$1/$2');
 $routes->get('club/remaining-changes', 'ControlClub::getRemainingChanges');
 
-// Email Verification Routes
+// Email Verification & Guide Routes
 $routes->get('verify-email', 'ControlEmailVerification::index');
+$routes->get('guide', 'ControlEmailVerification::guide');
 $routes->post('verify-email/check', 'ControlEmailVerification::verifyAndGetEmail');
 $routes->post('verify-email/reset-password', 'ControlEmailVerification::resetPassword');
 
