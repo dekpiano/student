@@ -26,6 +26,7 @@
             --primary-dark: #a81c5d;
             --primary-light: #f472b6;
             --accent-cyan: #06b6d4;
+            --accent-amber: #f59e0b;
             --bg-gradient: linear-gradient(135deg, #180312 0%, #3b0726 35%, #5c0d38 70%, #9d1757 100%);
         }
 
@@ -91,14 +92,14 @@
 
         /* Main Glass Container */
         .guide-container {
-            max-width: 900px;
+            max-width: 980px;
             margin: 0 auto;
             position: relative;
             z-index: 2;
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.97);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.4);
@@ -122,7 +123,7 @@
 
         .guide-header {
             background: linear-gradient(135deg, var(--primary-pink) 0%, var(--primary-dark) 100%);
-            padding: clamp(28px, 6vw, 42px) clamp(20px, 4vw, 32px);
+            padding: clamp(26px, 5vw, 38px) clamp(18px, 4vw, 32px);
             text-align: center;
             color: #ffffff;
             position: relative;
@@ -130,33 +131,116 @@
         }
 
         .brand-logo {
-            width: clamp(75px, 16vw, 95px);
-            height: clamp(75px, 16vw, 95px);
+            width: clamp(70px, 15vw, 88px);
+            height: clamp(70px, 15vw, 88px);
             object-fit: contain;
             filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .guide-body {
-            padding: clamp(24px, 5vw, 40px) clamp(18px, 4vw, 36px);
+            padding: clamp(18px, 4vw, 36px) clamp(14px, 3.5vw, 32px);
         }
+
+        /* DEDICATED TOP MENU BUTTONS / TABS (คนละปุ่มชัดเจน) */
+        .guide-tab-nav {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .guide-tab-btn {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            text-align: left;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #334155;
+            width: 100%;
+        }
+
+        .guide-tab-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+        }
+
+        .tab-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+
+        .tab-title-text {
+            font-weight: 800;
+            font-size: 0.95rem;
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+
+        .tab-subtitle-text {
+            font-size: 0.76rem;
+            color: #64748b;
+            line-height: 1.2;
+        }
+
+        /* Active states for each distinct menu button */
+        .btn-tab-cyan .tab-icon-box { background: #ecfeff; color: #0891b2; }
+        .btn-tab-cyan.active {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            border-color: #06b6d4;
+            color: #ffffff !important;
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-tab-cyan.active .tab-icon-box { background: rgba(255, 255, 255, 0.25); color: #ffffff; }
+        .btn-tab-cyan.active .tab-subtitle-text { color: rgba(255, 255, 255, 0.85); }
+
+        .btn-tab-pink .tab-icon-box { background: #fdf2f8; color: var(--primary-pink); }
+        .btn-tab-pink.active {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary-pink);
+            color: #ffffff !important;
+            box-shadow: 0 8px 25px rgba(232, 62, 140, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-tab-pink.active .tab-icon-box { background: rgba(255, 255, 255, 0.25); color: #ffffff; }
+        .btn-tab-pink.active .tab-subtitle-text { color: rgba(255, 255, 255, 0.85); }
+
+        .btn-tab-amber .tab-icon-box { background: #fffbeb; color: #d97706; }
+        .btn-tab-amber.active {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            border-color: #f59e0b;
+            color: #ffffff !important;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-tab-amber.active .tab-icon-box { background: rgba(255, 255, 255, 0.25); color: #ffffff; }
+        .btn-tab-amber.active .tab-subtitle-text { color: rgba(255, 255, 255, 0.85); }
 
         /* Step Card Styling */
         .step-card {
             background: #ffffff;
-            border-radius: 22px;
+            border-radius: 24px;
             border: 1.5px solid #e2e8f0;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-            padding: clamp(20px, 4vw, 30px);
-            margin-bottom: 28px;
+            padding: clamp(18px, 3.5vw, 28px);
+            margin-bottom: 24px;
             position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .step-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
-            border-color: var(--primary-light);
         }
 
         .step-badge {
@@ -181,6 +265,11 @@
             box-shadow: 0 4px 14px rgba(232, 62, 140, 0.4);
         }
 
+        .step-badge-3 {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.4);
+        }
+
         .step-list {
             list-style: none;
             padding-left: 0;
@@ -189,8 +278,8 @@
 
         .step-list li {
             position: relative;
-            padding-left: 36px;
-            margin-bottom: 16px;
+            padding-left: 38px;
+            margin-bottom: 24px;
             font-size: 1rem;
             line-height: 1.6;
             color: #334155;
@@ -204,63 +293,180 @@
             position: absolute;
             left: 0;
             top: 2px;
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: #f1f5f9;
             color: var(--primary-dark);
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid var(--primary-light);
+            box-shadow: 0 2px 6px rgba(232, 62, 140, 0.2);
         }
 
         .info-box {
             background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
             border-left: 4px solid #3b82f6;
             border-radius: 14px;
-            padding: 16px clamp(14px, 3vw, 20px);
-            margin: 16px 0;
+            padding: 14px 18px;
+            margin: 14px 0;
         }
 
         .tip-box {
             background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
             border-left: 4px solid #eab308;
             border-radius: 14px;
-            padding: 16px clamp(14px, 3vw, 20px);
-            margin: 16px 0;
+            padding: 14px 18px;
+            margin: 14px 0;
             color: #713f12;
         }
 
-        /* FAQ Accordion Styling */
-        .accordion-item {
-            border: 1.5px solid #e2e8f0;
-            border-radius: 16px !important;
-            overflow: hidden;
-            margin-bottom: 12px;
-        }
-
-        .accordion-button {
-            font-weight: 700;
-            color: #1e293b;
-            background: #f8fafc;
-            padding: 16px 20px;
-            font-size: 1rem;
-        }
-
-        .accordion-button:not(.collapsed) {
-            color: var(--primary-dark);
-            background: #fce7f3;
-            box-shadow: none;
-        }
-
-        .accordion-body {
+        /* UI MOCKUP SCREEN PREVIEWS */
+        .ui-mockup-window {
             background: #ffffff;
-            color: #475569;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            border-radius: 18px;
+            border: 1.5px solid #cbd5e1;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin: 14px 0 20px;
+            position: relative;
+        }
+
+        .ui-mockup-topbar {
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ui-mockup-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .ui-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .ui-dot-red { background-color: #ef4444; }
+        .ui-dot-yellow { background-color: #f59e0b; }
+        .ui-dot-green { background-color: #10b981; }
+
+        .ui-mockup-url {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 2px 12px;
+            font-size: 0.75rem;
+            color: #64748b;
+            flex-grow: 1;
+            max-width: 280px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .ui-mockup-body {
+            padding: 18px;
+            background: #fafafa;
+        }
+
+        /* Highlight Callout Pointer */
+        .ui-pointer-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ec4899;
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
+            animation: pulsePointer 1.8s infinite alternate;
+        }
+
+        @keyframes pulsePointer {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-3px); }
+        }
+
+        .ui-pulse-target {
+            outline: 2.5px dashed #e83e8c !important;
+            outline-offset: 3px;
+            border-radius: 14px;
+        }
+
+        .ui-pulse-target-cyan {
+            outline: 2.5px dashed #06b6d4 !important;
+            outline-offset: 3px;
+            border-radius: 14px;
+        }
+
+        /* Mockup Component Details */
+        .mock-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .mock-btn-google {
+            background: linear-gradient(135deg, #e83e8c 0%, #a81c5d 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .mock-btn-register {
+            background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .mock-account-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            background: #ffffff;
+            transition: all 0.2s;
+        }
+
+        .mock-account-selected {
+            border-color: #10b981;
+            background: #f0fdf4;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
         }
 
         /* Action Buttons */
@@ -269,13 +475,13 @@
             color: #ffffff;
             border: none;
             border-radius: 16px;
-            padding: 14px 24px;
-            font-size: 1.05rem;
+            padding: 12px 22px;
+            font-size: 1rem;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             text-decoration: none;
             box-shadow: 0 6px 20px rgba(232, 62, 140, 0.4);
             transition: all 0.25s ease;
@@ -292,13 +498,13 @@
             color: #ffffff;
             border: none;
             border-radius: 16px;
-            padding: 14px 24px;
-            font-size: 1.05rem;
+            padding: 12px 22px;
+            font-size: 1rem;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             text-decoration: none;
             box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
             transition: all 0.25s ease;
@@ -349,106 +555,521 @@
             <!-- Header -->
             <div class="guide-header">
                 <img src="<?= base_url('uploads/LogoSchool/LogoSKJ_4.png') ?>" alt="SKJ Logo" class="brand-logo" />
-                <h3 class="fw-bold mb-1 text-white">คู่มือการใช้งานระบบนักเรียน & การใช้อีเมลโรงเรียน</h3>
-                <p class="mb-0 text-white-50 fs-6">สำหรับนักเรียนทุกคนที่เพิ่งเริ่มต้นใช้งาน หรือยังใช้อีเมลโรงเรียน (@skj.ac.th) ไม่เป็น</p>
+                <h3 class="fw-bold mb-1 text-white">คู่มือการใช้งานระบบนักเรียน & อีเมลโรงเรียน</h3>
+                <p class="mb-0 text-white-50 fs-6">เลือกหัวข้อที่ต้องการดูคู่มือได้จากปุ่มด้านล่างนี้ได้เลยครับ</p>
             </div>
 
             <!-- Body -->
             <div class="guide-body">
 
-                <!-- Welcome Text -->
-                <div class="alert alert-light border-0 shadow-sm p-3 mb-4 rounded-4 text-center">
-                    <span class="fs-5">👋</span> <strong>สวัสดีนักเรียนทุกคนครับ!</strong><br>
-                    คู่มือนี้จัดทำขึ้นเพื่อช่วยให้นักเรียนทุกคนที่ <strong>ยังไม่มีอีเมลโรงเรียน</strong> หรือ <strong>ยังใช้อีเมลโรงเรียนเข้าสู่ระบบไม่เป็น</strong> สามารถทำตามได้ง่าย ๆ เพียง 2 ขั้นตอนสั้น ๆ ด้านล่างนี้ครับ!
-                </div>
-
-                <!-- STEP 1 -->
-                <div class="step-card">
-                    <span class="step-badge step-badge-1">
-                        <i class="bx bx-shield-quarter fs-5"></i> ขั้นตอนที่ 1: ยืนยันตัวตนรับอีเมลโรงเรียน (ทำครั้งแรกครั้งเดียว)
-                    </span>
-
-                    <div class="info-box">
-                        <div class="fw-bold text-primary mb-1"><i class="bx bx-bulb me-1"></i> ทำไมต้องทำขั้นตอนนี้?</div>
-                        <div class="small">นักเรียนโรงเรียนเราทุกคนจะมีอีเมลประจำตัวพิเศษที่ลงท้ายด้วย <code>@skj.ac.th</code> (ใช้ล็อกอินเข้าเรียน Google Classroom, ดูเกรด และใช้บริการ Google ได้ฟรีตลอดการเรียน)</div>
+                <!-- TOP SEPARATE MENU BUTTONS (คนละปุ่มชัดเจน) -->
+                <div class="row g-3 mb-4" id="guideMenuButtons" role="tablist">
+                    <!-- Button 1: ยืนยันตัวตนรับอีเมล -->
+                    <div class="col-12 col-md-4">
+                        <button class="guide-tab-btn btn-tab-cyan active" id="tab-btn-1" data-bs-toggle="pill" data-bs-target="#tab-content-1" type="button" role="tab" aria-controls="tab-content-1" aria-selected="true">
+                            <div class="tab-icon-box">
+                                <i class="bx bx-shield-quarter"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="tab-title-text">1. ยืนยันรับอีเมล</div>
+                                <div class="tab-subtitle-text">สำหรับนักเรียนใหม่/ยังไม่มีอีเมล</div>
+                            </div>
+                        </button>
                     </div>
 
-                    <ol class="step-list">
-                        <li>
-                            <span class="step-number">1</span>
-                            เปิดหน้าแรกของ <strong>ระบบนักเรียน</strong> แล้วกดปุ่มสีฟ้า <span class="badge bg-info text-dark">"ยืนยันตัวตนขอรับอีเมลครั้งแรก"</span>
-                        </li>
-                        <li>
-                            <span class="step-number">2</span>
-                            กรอกข้อมูลส่วนตัว 2 อย่าง:
-                            <div class="mt-2 p-2 bg-light rounded-3 border small">
-                                • 🆔 <strong>เลขประจำตัวนักเรียน</strong> (เช่น <code>12345</code>)<br>
-                                • 🪪 <strong>เลขประจำตัวประชาชน 13 หลัก</strong> ของน้อง ๆ
+                    <!-- Button 2: เข้าสู่ระบบด้วย Google -->
+                    <div class="col-12 col-md-4">
+                        <button class="guide-tab-btn btn-tab-pink" id="tab-btn-2" data-bs-toggle="pill" data-bs-target="#tab-content-2" type="button" role="tab" aria-controls="tab-content-2" aria-selected="false">
+                            <div class="tab-icon-box">
+                                <i class="bx bxl-google"></i>
                             </div>
-                        </li>
-                        <li>
-                            <span class="step-number">3</span>
-                            กดปุ่ม <span class="badge bg-danger">"ตรวจสอบและรับอีเมลโรงเรียน"</span>
-                        </li>
-                        <li>
-                            <span class="step-number">4</span>
-                            <strong>จดหรือบันทึกข้อมูลสำคัญที่ได้ขึ้นมา:</strong>
-                            <div class="mt-2 p-3 bg-white border border-info rounded-3">
-                                ✉️ <strong>อีเมลโรงเรียนของคุณ:</strong> <code class="text-danger fw-bold fs-6">skj12345@skj.ac.th</code><br>
-                                🔑 <strong>รหัสผ่านเริ่มต้น:</strong> <code class="text-dark fw-bold">Skj@123456</code>
+                            <div class="flex-grow-1">
+                                <div class="tab-title-text">2. เข้าสู่ระบบ Google</div>
+                                <div class="tab-subtitle-text">ใช้งานประจำวัน / ดูเกรด / ชุมนุม</div>
                             </div>
-                        </li>
-                        <li>
-                            <span class="step-number">5</span>
-                            <strong>เปิดใช้งานครั้งแรกที่ Gmail:</strong>
-                            <br>กดปุ่ม <span class="badge bg-white text-dark border"><i class="bx bxl-google text-primary"></i> เข้าสู่ระบบ Gmail (@skj.ac.th)</span> เพื่อนำอีเมลและรหัสผ่านเริ่มต้นไปล็อกอิน 
-                            <div class="tip-box mt-2 mb-0">
-                                <strong>⚠️ สำคัญมาก:</strong> เมื่อล็อกอินเข้า Gmail ครั้งแรก ระบบ Google จะบังคับให้ <strong>"ตั้งรหัสผ่านใหม่ส่วนตัว"</strong> ทันที ให้ตั้งรหัสผ่านที่จำได้ง่ายแล้วจำไว้ให้ดีนะครับ!
-                            </div>
-                        </li>
-                    </ol>
+                        </button>
+                    </div>
 
-                    <div class="mt-3 text-end">
-                        <a href="<?= base_url('verify-email') ?>" class="btn-action-secondary">
-                            <i class="bx bx-shield-quarter"></i> ไปหน้ายืนยันตัวตนรับอีเมล &rarr;
-                        </a>
+                    <!-- Button 3: ลืมรหัสผ่าน / ขอรหัสใหม่ -->
+                    <div class="col-12 col-md-4">
+                        <button class="guide-tab-btn btn-tab-amber" id="tab-btn-3" data-bs-toggle="pill" data-bs-target="#tab-content-3" type="button" role="tab" aria-controls="tab-content-3" aria-selected="false">
+                            <div class="tab-icon-box">
+                                <i class="bx bx-key"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="tab-title-text">3. ลืมรหัสผ่าน / รีเซ็ต</div>
+                                <div class="tab-subtitle-text">ขอรหัสผ่านใหม่ได้เอง 24 ชม.</div>
+                            </div>
+                        </button>
                     </div>
                 </div>
 
-                <!-- STEP 2 -->
-                <div class="step-card">
-                    <span class="step-badge step-badge-2">
-                        <i class="bx bxl-google fs-5"></i> ขั้นตอนที่ 2: เข้าสู่ระบบนักเรียนด้วย Google (สำหรับใช้งานประจำวัน)
-                    </span>
+                <!-- TAB CONTENT CONTAINER -->
+                <div class="tab-content" id="guideTabContent">
 
-                    <div class="info-box" style="background: #fdf2f8; border-color: var(--primary-pink); color: #831843;">
-                        <div class="fw-bold mb-1"><i class="bx bx-rocket me-1"></i> เมื่อมีอีเมล @skj.ac.th แล้ว ต่อไปนี้ก็ล็อกอินง่าย ๆ แค่คลิกเดียว!</div>
+                    <!-- ========================================== -->
+                    <!-- TAB 1: ยืนยันตัวตนรับอีเมลครั้งแรก -->
+                    <!-- ========================================== -->
+                    <div class="tab-pane fade show active" id="tab-content-1" role="tabpanel" aria-labelledby="tab-btn-1">
+                        <div class="step-card border-info">
+                            <span class="step-badge step-badge-1">
+                                <i class="bx bx-shield-quarter fs-5"></i> ขั้นตอนที่ 1: ยืนยันตัวตนรับอีเมลโรงเรียน (ทำครั้งแรกครั้งเดียว)
+                            </span>
+
+                            <div class="info-box">
+                                <div class="fw-bold text-primary mb-1"><i class="bx bx-bulb me-1"></i> ทำไมต้องทำขั้นตอนนี้?</div>
+                                <div class="small">นักเรียนโรงเรียนเราทุกคนจะมีอีเมลประจำตัวพิเศษที่ลงท้ายด้วย <code>@skj.ac.th</code> (ใช้ล็อกอินเข้าเรียน Google Classroom, ดูเกรด และใช้บริการ Google ได้ฟรีตลอดการเรียน)</div>
+                            </div>
+
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-number">1</span>
+                                    เปิดหน้าแรกของ <strong>ระบบนักเรียน</strong> แล้วกดที่ปุ่มสีฟ้า <span class="badge bg-info text-dark fw-bold">"ยืนยันตัวตนขอรับอีเมลครั้งแรก"</span>
+
+                                    <!-- UI MOCKUP 1: HOME PAGE LOGIN PREVIEW -->
+                                    <div class="ui-mockup-window">
+                                        <div class="ui-mockup-topbar">
+                                            <div class="ui-mockup-dots">
+                                                <span class="ui-dot ui-dot-red"></span>
+                                                <span class="ui-dot ui-dot-yellow"></span>
+                                                <span class="ui-dot ui-dot-green"></span>
+                                            </div>
+                                            <div class="ui-mockup-url">
+                                                <i class="bx bx-lock-alt text-success"></i> skj.ac.th/student
+                                            </div>
+                                            <span class="badge bg-light text-secondary border small ms-auto">ภาพหน้าแรกระบบ</span>
+                                        </div>
+                                        <div class="ui-mockup-body">
+                                            <div class="bg-white p-3 rounded-4 shadow-sm border mx-auto" style="max-width: 440px;">
+                                                <div class="text-center mb-3">
+                                                    <img src="<?= base_url('uploads/LogoSchool/LogoSKJ_4.png') ?>" alt="" class="mock-logo mb-1">
+                                                    <div class="fw-bold text-dark fs-6">ระบบงานนักเรียน SKJ</div>
+                                                </div>
+
+                                                <!-- Login Section -->
+                                                <div class="p-2 bg-light rounded-3 border mb-3 opacity-50">
+                                                    <button class="mock-btn-google" disabled>
+                                                        <i class="bx bxl-google text-white fs-5"></i> เข้าสู่ระบบด้วย Google (@skj.ac.th)
+                                                    </button>
+                                                </div>
+
+                                                <!-- Register Section Target -->
+                                                <div class="p-2 bg-white rounded-3 border border-info ui-pulse-target-cyan position-relative">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <span class="badge bg-info text-dark">สำหรับนักเรียนที่ยังไม่มีอีเมล</span>
+                                                        <span class="ui-pointer-tag">👉 1. กดปุ่มสีฟ้านี้</span>
+                                                    </div>
+                                                    <div class="mock-btn-register">
+                                                        <i class="bx bx-shield-quarter fs-5"></i> ยืนยันตัวตนขอรับอีเมลครั้งแรก &rarr;
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <span class="step-number">2</span>
+                                    กรอกข้อมูลส่วนตัว 2 อย่าง ในหน้าระบบยืนยันตัวตน แล้วกดปุ่ม <strong>"ตรวจสอบและรับอีเมลโรงเรียน"</strong>
+
+                                    <!-- UI MOCKUP 2: VERIFICATION FORM PREVIEW -->
+                                    <div class="ui-mockup-window">
+                                        <div class="ui-mockup-topbar">
+                                            <div class="ui-mockup-dots">
+                                                <span class="ui-dot ui-dot-red"></span>
+                                                <span class="ui-dot ui-dot-yellow"></span>
+                                                <span class="ui-dot ui-dot-green"></span>
+                                            </div>
+                                            <div class="ui-mockup-url">
+                                                <i class="bx bx-lock-alt text-success"></i> skj.ac.th/verify-email
+                                            </div>
+                                            <span class="badge bg-light text-secondary border small ms-auto">ภาพหน้ารับอีเมล</span>
+                                        </div>
+                                        <div class="ui-mockup-body">
+                                            <div class="bg-white p-3 rounded-4 shadow-sm border mx-auto" style="max-width: 440px;">
+                                                <div class="text-center mb-3">
+                                                    <div class="fw-bold text-danger fs-6"><i class="bx bx-shield-quarter"></i> ยืนยันตัวตนรับอีเมลโรงเรียน</div>
+                                                    <div class="text-muted small">กรอกเลขประจำตัวและเลขบัตรประชาชน</div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label small fw-bold text-dark d-flex justify-content-between">
+                                                        <span><i class="bx bx-id-card text-primary"></i> เลขประจำตัวนักเรียน</span>
+                                                        <span class="text-primary fw-normal">เช่น 12345 (5 หลัก)</span>
+                                                    </label>
+                                                    <input type="text" class="form-control form-control-sm bg-light" value="12345" readonly style="font-weight: 600;">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label small fw-bold text-dark d-flex justify-content-between">
+                                                        <span><i class="bx bx-credit-card text-primary"></i> เลขบัตรประชาชน</span>
+                                                        <span class="text-primary fw-normal">13 หลัก</span>
+                                                    </label>
+                                                    <input type="text" class="form-control form-control-sm bg-light" value="1609900123456" readonly style="font-weight: 600;">
+                                                </div>
+
+                                                <div class="position-relative">
+                                                    <div class="d-flex justify-content-end mb-1">
+                                                        <span class="ui-pointer-tag">👉 2. กดตรวจสอบข้อมูล</span>
+                                                    </div>
+                                                    <button class="mock-btn-google py-2" disabled>
+                                                        <i class="bx bx-search-alt fs-5"></i> ตรวจสอบและรับอีเมลโรงเรียน
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <span class="step-number">3</span>
+                                    <strong>จดบันทึกอีเมลและรหัสผ่านที่ได้</strong> แล้วกดปุ่ม <strong>"ไปเข้าสู่ระบบ Gmail"</strong> เพื่อตั้งรหัสผ่านใหม่
+
+                                    <!-- UI MOCKUP 3: RESULT & ACTIVATION PREVIEW -->
+                                    <div class="ui-mockup-window">
+                                        <div class="ui-mockup-topbar">
+                                            <div class="ui-mockup-dots">
+                                                <span class="ui-dot ui-dot-red"></span>
+                                                <span class="ui-dot ui-dot-yellow"></span>
+                                                <span class="ui-dot ui-dot-green"></span>
+                                            </div>
+                                            <div class="ui-mockup-url">
+                                                <i class="bx bx-check-circle text-success"></i> ผลการออกอีเมลสำเร็จ
+                                            </div>
+                                            <span class="badge bg-success-subtle text-success border border-success small ms-auto">สำเร็จ!</span>
+                                        </div>
+                                        <div class="ui-mockup-body">
+                                            <div class="bg-white p-3 rounded-4 shadow-sm border mx-auto" style="max-width: 440px;">
+                                                <div class="text-center mb-3">
+                                                    <span class="badge bg-success p-2 rounded-circle mb-1"><i class="bx bx-check fs-4"></i></span>
+                                                    <div class="fw-bold text-success fs-6">สร้างและออกอีเมลโรงเรียนสำเร็จ!</div>
+                                                    <div class="text-muted small">ด.ช. สมชาย รักเรียน (ชั้น ม.1/1)</div>
+                                                </div>
+
+                                                <!-- Email Display -->
+                                                <div class="p-2 bg-light border rounded-3 text-center mb-2">
+                                                    <div class="text-muted small">อีเมลโรงเรียนของคุณ:</div>
+                                                    <div class="fw-bold text-danger fs-5" style="font-family: monospace;">skj12345@skj.ac.th</div>
+                                                    <span class="badge bg-secondary mt-1"><i class="bx bx-copy"></i> คัดลอกอีเมล</span>
+                                                </div>
+
+                                                <!-- Password Display -->
+                                                <div class="p-2 bg-warning-subtle border border-warning rounded-3 text-center mb-3">
+                                                    <div class="text-dark small">รหัสผ่านเริ่มต้น:</div>
+                                                    <div class="fw-bold text-dark fs-5" style="font-family: monospace;">Skj@123456</div>
+                                                    <span class="badge bg-secondary mt-1"><i class="bx bx-key"></i> คัดลอกรหัสผ่าน</span>
+                                                </div>
+
+                                                <!-- Next step trigger -->
+                                                <div class="position-relative">
+                                                    <div class="d-flex justify-content-end mb-1">
+                                                        <span class="ui-pointer-tag">👉 3. กดเพื่อไปตั้งรหัสใหม่ที่ Google</span>
+                                                    </div>
+                                                    <button class="btn btn-outline-dark w-100 fw-bold d-flex align-items-center justify-content-center gap-2 py-2 rounded-3" disabled>
+                                                        <i class="bx bxl-google text-danger fs-5"></i> ไปเข้าสู่ระบบ Gmail เพื่อตั้งรหัสผ่านใหม่
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tip-box mt-2 mb-0">
+                                        <strong>⚠️ สำคัญมาก:</strong> เมื่อนำอีเมลไปล็อกอินเข้า Gmail ครั้งแรก Google จะให้ <strong>"ตั้งรหัสผ่านใหม่ส่วนตัว"</strong> ทันที ให้น้อง ๆ ตั้งรหัสผ่านที่จำได้ง่ายและจดบันทึกไว้ให้เรียบร้อยนะครับ
+                                    </div>
+                                </li>
+                            </ol>
+
+                            <div class="mt-4 d-flex justify-content-between flex-wrap gap-2">
+                                <a href="<?= base_url('verify-email') ?>" class="btn-action-secondary">
+                                    <i class="bx bx-shield-quarter"></i> ไปหน้ายืนยันตัวตนรับอีเมลทันที &rarr;
+                                </a>
+                                <button class="btn btn-outline-primary rounded-3 fw-bold px-3 py-2" onclick="switchGuideTab('tab-btn-2')">
+                                    ดูขั้นตอนที่ 2: การเข้าสู่ระบบ Google &rarr;
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
-                    <ol class="step-list">
-                        <li>
-                            <span class="step-number">1</span>
-                            เปิดหน้าแรกของ <strong>ระบบงานนักเรียน</strong>
-                        </li>
-                        <li>
-                            <span class="step-number">2</span>
-                            กดที่ปุ่มสีชมพูขนาดใหญ่ <span class="badge bg-danger p-2"><i class="bx bxl-google me-1"></i> เข้าสู่ระบบด้วย Google (@skj.ac.th)</span>
-                        </li>
-                        <li>
-                            <span class="step-number">3</span>
-                            จะมีหน้าต่าง Google เด้งขึ้นมา ให้น้อง **กดเลือกบัญชีอีเมลโรงเรียน** (<code>@skj.ac.th</code>) ของน้อง
-                        </li>
-                        <li>
-                            <span class="step-number">4</span>
-                            🎉 <strong>ยินดีด้วย!</strong> ระบบจะพาน้องเข้าสู่หน้าจอหลักของระบบนักเรียนทันที สามารถดูเกรดและสมัครชุมนุมได้เลยครับ
-                        </li>
-                    </ol>
+                    <!-- ========================================== -->
+                    <!-- TAB 2: เข้าสู่ระบบด้วย Google -->
+                    <!-- ========================================== -->
+                    <div class="tab-pane fade" id="tab-content-2" role="tabpanel" aria-labelledby="tab-btn-2">
+                        <div class="step-card border-danger">
+                            <span class="step-badge step-badge-2">
+                                <i class="bx bxl-google fs-5"></i> ขั้นตอนที่ 2: เข้าสู่ระบบนักเรียนด้วย Google (สำหรับใช้งานประจำวัน)
+                            </span>
 
-                    <div class="mt-3 text-end">
-                        <a href="<?= base_url() ?>" class="btn-action-primary">
-                            <i class="bx bx-log-in-circle"></i> ไปที่หน้าเข้าสู่ระบบนักเรียน &rarr;
-                        </a>
+                            <div class="info-box" style="background: #fdf2f8; border-color: var(--primary-pink); color: #831843;">
+                                <div class="fw-bold mb-1"><i class="bx bx-rocket me-1"></i> เมื่อเปลี่ยนรหัสผ่านเสร็จแล้ว ต่อไปนี้เข้าใช้งานระบบได้ด้วยคลิกเดียว!</div>
+                            </div>
+
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-number">1</span>
+                                    เปิดหน้าแรกของระบบนักเรียน แล้วกดปุ่มสีชมพู <strong>"เข้าสู่ระบบด้วย Google (@skj.ac.th)"</strong>
+                                </li>
+
+                                <li>
+                                    <span class="step-number">2</span>
+                                    จะมีหน้าต่าง Google ปรากฏขึ้นมา ให้น้อง <strong>เลือกบัญชีอีเมลโรงเรียน (@skj.ac.th)</strong> เท่านั้น
+
+                                    <!-- UI MOCKUP 4: GOOGLE ACCOUNT CHOOSER PREVIEW -->
+                                    <div class="ui-mockup-window">
+                                        <div class="ui-mockup-topbar">
+                                            <div class="ui-mockup-dots">
+                                                <span class="ui-dot ui-dot-red"></span>
+                                                <span class="ui-dot ui-dot-yellow"></span>
+                                                <span class="ui-dot ui-dot-green"></span>
+                                            </div>
+                                            <div class="ui-mockup-url">
+                                                <i class="bx bxl-google text-danger"></i> accounts.google.com/signin
+                                            </div>
+                                            <span class="badge bg-light text-secondary border small ms-auto">หน้าต่างเลือกบัญชี</span>
+                                        </div>
+                                        <div class="ui-mockup-body">
+                                            <div class="bg-white p-3 rounded-4 shadow-sm border mx-auto" style="max-width: 440px;">
+                                                <div class="text-center mb-3">
+                                                    <i class="bx bxl-google text-danger fs-2"></i>
+                                                    <div class="fw-bold text-dark fs-6">เลือกบัญชีเพื่อเข้าสู่ระบบ SKJ</div>
+                                                </div>
+
+                                                <!-- Wrong Account (Personal) -->
+                                                <div class="mock-account-item mb-2 opacity-50">
+                                                    <div class="rounded-circle bg-secondary text-white p-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                                                        <i class="bx bx-user"></i>
+                                                    </div>
+                                                    <div class="text-start flex-grow-1">
+                                                        <div class="fw-bold small text-dark">somchai.playgame@gmail.com</div>
+                                                        <div class="text-danger small"><i class="bx bx-x-circle"></i> บัญชีส่วนตัว (ห้ามเลือก)</div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Correct Account (School) Target -->
+                                                <div class="mock-account-item mock-account-selected position-relative ui-pulse-target">
+                                                    <div class="rounded-circle bg-danger text-white p-2 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                                                        <i class="bx bx-check"></i>
+                                                    </div>
+                                                    <div class="text-start flex-grow-1">
+                                                        <div class="fw-bold small text-dark">skj12345@skj.ac.th</div>
+                                                        <div class="text-success small fw-bold"><i class="bx bx-check-circle"></i> บัญชีโรงเรียน (ถูกต้อง)</div>
+                                                    </div>
+                                                    <span class="ui-pointer-tag">👉 เลือกบัญชีนี้</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <span class="step-number">3</span>
+                                    🎉 <strong>เข้าสู่ระบบสำเร็จ!</strong> ระบบจะพาน้องเข้าสู่หน้าจอหลัก เพื่อดูผลการเรียน หรือลงทะเบียนกิจกรรมชุมนุม
+
+                                    <!-- UI MOCKUP 5: STUDENT DASHBOARD PREVIEW -->
+                                    <div class="ui-mockup-window">
+                                        <div class="ui-mockup-topbar">
+                                            <div class="ui-mockup-dots">
+                                                <span class="ui-dot ui-dot-red"></span>
+                                                <span class="ui-dot ui-dot-yellow"></span>
+                                                <span class="ui-dot ui-dot-green"></span>
+                                            </div>
+                                            <div class="ui-mockup-url">
+                                                <i class="bx bx-home-alt text-primary"></i> skj.ac.th/dashboard
+                                            </div>
+                                            <span class="badge bg-success-subtle text-success border border-success small ms-auto">หน้าหลักนักเรียน</span>
+                                        </div>
+                                        <div class="ui-mockup-body">
+                                            <div class="bg-white p-3 rounded-4 shadow-sm border mx-auto" style="max-width: 500px;">
+                                                <!-- Welcome Banner -->
+                                                <div class="p-3 text-white rounded-3 mb-3" style="background: linear-gradient(135deg, #e83e8c 0%, #b8266d 100%);">
+                                                    <div class="fw-bold fs-6">สวัสดี, ด.ช. สมชาย รักเรียน 👋</div>
+                                                    <div class="small opacity-75">รหัสนักเรียน: 12345 | ชั้น ม.1/1 | สถานะ: ปกติ</div>
+                                                </div>
+
+                                                <!-- Quick Action Cards -->
+                                                <div class="row g-2">
+                                                    <div class="col-6">
+                                                        <div class="p-2 border rounded-3 text-center bg-light">
+                                                            <i class="bx bx-book-content text-primary fs-3"></i>
+                                                            <div class="fw-bold small mt-1 text-dark">ดูผลการเรียน</div>
+                                                            <span class="badge bg-primary w-100 mt-1">เข้าดูเกรด</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="p-2 border rounded-3 text-center bg-light">
+                                                            <i class="bx bx-group text-success fs-3"></i>
+                                                            <div class="fw-bold small mt-1 text-dark">กิจกรรมชุมนุม</div>
+                                                            <span class="badge bg-success w-100 mt-1">ลงทะเบียน</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+
+                            <div class="mt-4 d-flex justify-content-between flex-wrap gap-2">
+                                <a href="<?= base_url() ?>" class="btn-action-primary">
+                                    <i class="bx bx-log-in-circle"></i> ไปที่หน้าเข้าสู่ระบบนักเรียนทันที &rarr;
+                                </a>
+                                <button class="btn btn-outline-warning text-dark rounded-3 fw-bold px-3 py-2" onclick="switchGuideTab('tab-btn-3')">
+                                    ดูขั้นตอนที่ 3: วิธีรีเซ็ตรหัสผ่าน &rarr;
+                                </button>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- ========================================== -->
+                    <!-- TAB 3: ลืมรหัสผ่าน / ขอรีเซ็ตรหัสผ่านใหม่ -->
+                    <!-- ========================================== -->
+                    <div class="tab-pane fade" id="tab-content-3" role="tabpanel" aria-labelledby="tab-btn-3">
+                        <div class="step-card border-warning">
+                            <span class="step-badge step-badge-3">
+                                <i class="bx bx-key fs-5"></i> ขั้นตอนที่ 3: ลืมรหัสผ่านอีเมลโรงเรียน / รีเซ็ตรหัสผ่านใหม่ (ทำได้ตลอด 24 ชม.)
+                            </span>
+
+                            <div class="info-box" style="background: #fffbeb; border-color: #f59e0b; color: #92400e;">
+                                <div class="fw-bold mb-1"><i class="bx bx-shield-quarter me-1"></i> ลืมรหัสผ่าน ไม่ต้องไปหาครู! ระบบสามารถรีเซ็ตรหัสผ่านใหม่ให้อัตโนมัติทันที</div>
+                                <div class="small">หากน้องจำรหัสผ่านเข้า Gmail ไม่ได้ สามารถทำตาม 3 ขั้นตอนง่าย ๆ ด้านล่างนี้เพื่อขอรหัสผ่านใหม่ได้ทันทีครับ</div>
+                            </div>
+
+                            <ol class="step-list">
+                                <li>
+                                    <span class="step-number">1</span>
+                                    เปิดหน้าแรกของระบบนักเรียน แล้วกดที่ข้อความลิงก์ <strong class="text-primary">"ลืม / รีเซ็ตรหัสผ่าน?"</strong> (อยู่ใต้ปุ่มเข้าสู่ระบบ Google)
+
+                                    <!-- UI MOCKUP 6: FORGOT PASSWORD BUTTON PREVIEW -->
+                                    <div class="ui-mockup-window">
+                                        <div class="ui-mockup-topbar">
+                                            <div class="ui-mockup-dots">
+                                                <span class="ui-dot ui-dot-red"></span>
+                                                <span class="ui-dot ui-dot-yellow"></span>
+                                                <span class="ui-dot ui-dot-green"></span>
+                                            </div>
+                                            <div class="ui-mockup-url">
+                                                <i class="bx bx-lock-alt text-success"></i> หน้าแรกระบบนักเรียน
+                                            </div>
+                                            <span class="badge bg-light text-secondary border small ms-auto">จุดกดลืมรหัสผ่าน</span>
+                                        </div>
+                                        <div class="ui-mockup-body">
+                                            <div class="bg-white p-3 rounded-4 shadow-sm border mx-auto" style="max-width: 440px;">
+                                                <div class="p-2 bg-light rounded-3 border mb-2 opacity-50">
+                                                    <button class="mock-btn-google py-2" disabled>
+                                                        <i class="bx bxl-google text-white fs-5"></i> เข้าสู่ระบบด้วย Google (@skj.ac.th)
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center mt-2 p-2 rounded-3 ui-pulse-target">
+                                                    <span class="text-muted" style="font-size: 0.72rem;"><i class="bx bx-info-circle text-primary"></i> บัญชี @skj.ac.th เท่านั้น</span>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <span class="ui-pointer-tag">👉 1. กดตรงนี้</span>
+                                                        <span class="text-danger fw-bold small"><i class="bx bx-key"></i> ลืม / รีเซ็ตรหัสผ่าน?</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <span class="step-number">2</span>
+                                    จะมีหน้าต่างป๊อปอัปขึ้นมา ให้น้อง <strong>กรอกเลขประจำตัวนักเรียน (5 หลัก)</strong> และ <strong>เลขบัตรประชาชน (13 หลัก)</strong> แล้วกดปุ่ม <strong>"ยืนยันรีเซ็ตรหัสผ่าน"</strong>
+
+                                    <!-- UI MOCKUP 7: RESET PASSWORD POPUP MODAL -->
+                                    <div class="ui-mockup-window">
+                                        <div class="ui-mockup-topbar">
+                                            <div class="ui-mockup-dots">
+                                                <span class="ui-dot ui-dot-red"></span>
+                                                <span class="ui-dot ui-dot-yellow"></span>
+                                                <span class="ui-dot ui-dot-green"></span>
+                                            </div>
+                                            <div class="ui-mockup-url">
+                                                <i class="bx bx-key text-warning"></i> หน้าต่างรีเซ็ตรหัสผ่าน
+                                            </div>
+                                            <span class="badge bg-warning-subtle text-warning border border-warning small ms-auto">ป๊อปอัปอัตโนมัติ</span>
+                                        </div>
+                                        <div class="ui-mockup-body">
+                                            <div class="bg-white p-3 rounded-4 shadow-sm border mx-auto" style="max-width: 420px;">
+                                                <div class="text-center mb-3">
+                                                    <div class="fw-bold fs-6 text-dark">🔑 รีเซ็ตรหัสผ่านอีเมลโรงเรียน</div>
+                                                </div>
+
+                                                <div class="text-start mb-2">
+                                                    <label class="form-label small fw-bold text-muted mb-1">เลขประจำตัวนักเรียน</label>
+                                                    <input type="text" class="form-control form-control-sm bg-light" value="12345" readonly style="font-weight: 600;">
+                                                </div>
+
+                                                <div class="text-start mb-3">
+                                                    <label class="form-label small fw-bold text-muted mb-1">เลขประจำตัวประชาชน (13 หลัก)</label>
+                                                    <input type="text" class="form-control form-control-sm bg-light" value="1609900123456" readonly style="font-weight: 600;">
+                                                </div>
+
+                                                <div class="position-relative">
+                                                    <div class="d-flex justify-content-end mb-1">
+                                                        <span class="ui-pointer-tag">👉 2. กดยืนยัน</span>
+                                                    </div>
+                                                    <button class="mock-btn-google py-2 w-100" style="background: linear-gradient(135deg, #e83e8c 0%, #a81c5d 100%);" disabled>
+                                                        ยืนยันรีเซ็ตรหัสผ่าน
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <span class="step-number">3</span>
+                                    ระบบจะแสดง <strong>รหัสผ่านใหม่</strong> ทันที ให้น้องกด <strong>"คัดลอกรหัสผ่าน"</strong> แล้วนำไปล็อกอินที่ Gmail เพื่อตั้งรหัสผ่านใหม่ส่วนตัวได้เลยครับ
+
+                                    <!-- UI MOCKUP 8: RESET RESULT & COPY PASSWORD -->
+                                    <div class="ui-mockup-window">
+                                        <div class="ui-mockup-topbar">
+                                            <div class="ui-mockup-dots">
+                                                <span class="ui-dot ui-dot-red"></span>
+                                                <span class="ui-dot ui-dot-yellow"></span>
+                                                <span class="ui-dot ui-dot-green"></span>
+                                            </div>
+                                            <div class="ui-mockup-url">
+                                                <i class="bx bx-check-circle text-success"></i> รีเซ็ตรหัสผ่านสำเร็จ
+                                            </div>
+                                            <span class="badge bg-success-subtle text-success border border-success small ms-auto">รหัสผ่านใหม่</span>
+                                        </div>
+                                        <div class="ui-mockup-body">
+                                            <div class="bg-white p-3 rounded-4 shadow-sm border mx-auto" style="max-width: 440px;">
+                                                <div class="text-center mb-2">
+                                                    <span class="badge bg-success p-2 rounded-circle mb-1"><i class="bx bx-check fs-4"></i></span>
+                                                    <div class="fw-bold text-success fs-6">รีเซ็ตรหัสผ่านสำเร็จ!</div>
+                                                    <div class="text-muted small">ด.ช. สมชาย รักเรียน (อีเมล: skj12345@skj.ac.th)</div>
+                                                </div>
+
+                                                <!-- New Password Card -->
+                                                <div class="p-2 bg-light border border-warning rounded-3 text-center mb-3">
+                                                    <div class="text-muted small">รหัสผ่านใหม่ของคุณ:</div>
+                                                    <div class="fw-bold text-danger fs-4 my-1" style="font-family: monospace;">Skj@893214</div>
+                                                    <div class="position-relative">
+                                                        <button class="btn btn-sm btn-secondary" disabled>
+                                                            <i class="bx bx-copy me-1"></i> คัดลอกรหัสผ่าน
+                                                        </button>
+                                                        <span class="ui-pointer-tag ms-2">👉 3. คัดลอกรหัสไปล็อกอิน</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="alert alert-info small text-start p-2 mb-0">
+                                                    <i class="bx bx-info-circle me-1"></i> <strong>คำแนะนำ:</strong> นำรหัสผ่านนี้ไปเข้า Gmail แล้วระบบ Google จะให้ตั้งรหัสใหม่ส่วนตัวทันที
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+
+                            <div class="mt-4 text-end">
+                                <a href="<?= base_url() ?>" class="btn btn-action-primary" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                    <i class="bx bx-key"></i> ไปที่หน้าแรกเพื่อรีเซ็ตรหัสผ่าน &rarr;
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- FAQ SECTION -->
@@ -464,7 +1085,7 @@
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
                                 <div class="accordion-body">
-                                    หากน้องจำรหัสผ่านไม่ได้ ไม่ต้องตกใจครับ! น้องสามารถไปที่หน้าแรก แล้วกดปุ่ม <strong>"ลืมรหัสผ่าน / รีเซ็ตรหัสผ่าน?"</strong> หรือ <a href="<?= base_url('verify-email') ?>" class="text-primary fw-bold">เข้าสู่หน้ายืนยันตัวตน</a> เพื่อกดสุ่มรีเซ็ตรหัสผ่านใหม่ได้เองตลอด 24 ชั่วโมงครับ
+                                    หากน้องจำรหัสผ่านไม่ได้ ไม่ต้องตกใจครับ! น้องสามารถไปที่หน้าแรก แล้วกดปุ่ม <strong>"ลืมรหัสผ่าน / ขอรีเซ็ตรหัสผ่านใหม่"</strong> เพื่อกดสุ่มรีเซ็ตรหัสผ่านใหม่ได้เองตลอด 24 ชั่วโมงครับ
                                 </div>
                             </div>
                         </div>
@@ -520,6 +1141,16 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function switchGuideTab(buttonId) {
+            const btn = document.getElementById(buttonId);
+            if (btn) {
+                const tab = new bootstrap.Tab(btn);
+                tab.show();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    </script>
 </body>
 
 </html>

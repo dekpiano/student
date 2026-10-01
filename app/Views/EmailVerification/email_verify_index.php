@@ -407,18 +407,20 @@
                 <form id="verifyForm">
                     <?= csrf_field() ?>
                     <div class="mb-3">
-                        <label for="student_code" class="custom-label">
-                            <i class="bx bx-id-card text-primary"></i> เลขประจำตัวนักเรียน
+                        <label for="student_code" class="custom-label d-flex justify-content-between align-items-center">
+                            <span><i class="bx bx-id-card text-primary"></i> เลขประจำตัวนักเรียน</span>
+                            <span class="badge bg-light text-muted border fw-normal" style="font-size: 0.72rem;">เลข 5 หลัก บนบัตร/ใบมอบตัว</span>
                         </label>
                         <div class="input-group-custom">
                             <i class="bx bx-id-card input-icon"></i>
-                            <input type="text" class="form-control" id="student_code" name="student_code" placeholder="กรอกเลขประจำตัวนักเรียน (เช่น 12345)" required autocomplete="off">
+                            <input type="text" class="form-control" id="student_code" name="student_code" placeholder="ระบุเลขประจำตัว 5 หลัก (เช่น 12345)" required autocomplete="off">
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <label for="id_card" class="custom-label">
-                            <i class="bx bx-credit-card-front text-primary"></i> เลขประจำตัวประชาชน (13 หลัก)
+                        <label for="id_card" class="custom-label d-flex justify-content-between align-items-center">
+                            <span><i class="bx bx-credit-card-front text-primary"></i> เลขประจำตัวประชาชน</span>
+                            <span class="badge bg-light text-muted border fw-normal" style="font-size: 0.72rem;">13 หลัก</span>
                         </label>
                         <div class="input-group-custom">
                             <i class="bx bx-lock-alt input-icon"></i>
@@ -479,21 +481,49 @@
 
                     <div id="googleStatusBadge" class="mb-3"></div>
 
+                    <!-- 3-Step Simple Guide for Students -->
+                    <div class="text-start bg-white p-3 rounded-3 mb-3 border shadow-sm" id="stepsGuideCard">
+                        <div class="fw-bold text-dark mb-2 small d-flex align-items-center gap-2">
+                            <i class="bx bx-list-check text-primary fs-5"></i>
+                            <span>3 ขั้นตอนเริ่มต้นใช้งาน (ทำตามได้ทันที):</span>
+                        </div>
+                        <div class="d-flex flex-column gap-2 small text-secondary">
+                            <div class="d-flex align-items-start gap-2">
+                                <span class="badge bg-primary rounded-circle" style="width: 20px; height: 20px; padding: 2px 0; text-align: center; flex-shrink: 0;">1</span>
+                                <span><strong>คัดลอกอีเมล & รหัสผ่าน</strong> ด้านบนไว้ให้เรียบร้อย</span>
+                            </div>
+                            <div class="d-flex align-items-start gap-2">
+                                <span class="badge bg-primary rounded-circle" style="width: 20px; height: 20px; padding: 2px 0; text-align: center; flex-shrink: 0;">2</span>
+                                <span>กดปุ่ม <strong>"ไปเข้าสู่ระบบ Gmail / Google"</strong> แล้วระบบจะให้ตั้งรหัสผ่านใหม่ของตนเอง</span>
+                            </div>
+                            <div class="d-flex align-items-start gap-2">
+                                <span class="badge bg-primary rounded-circle" style="width: 20px; height: 20px; padding: 2px 0; text-align: center; flex-shrink: 0;">3</span>
+                                <span>เมื่อเปลี่ยนรหัสผ่านเสร็จแล้ว <strong>กลับมาที่ระบบนักเรียน</strong> เพื่อเข้าใช้งานได้ทันที</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="alert alert-info text-start small mb-3" id="alertNotice" role="alert">
                         <i class="bx bx-info-circle me-1"></i>
                         <strong>คำแนะนำการเปิดใช้งานครั้งแรก:</strong><br>
                         นำอีเมลและรหัสผ่านไปล็อกอินใน <strong>Gmail</strong> เมื่อเข้าสู่ระบบครั้งแรก ระบบ Google จะบังคับให้ <strong>ตั้งรหัสผ่านใหม่ส่วนตัว</strong> ทันทีเพื่อความปลอดภัย
                     </div>
 
-                    <a href="https://accounts.google.com/ServiceLogin?continue=https://mail.google.com" target="_blank" class="btn btn-google-login">
-                        <svg width="18" height="18" viewBox="0 0 18 18">
-                            <path fill="#4285F4" d="M17.64 9.2c0-.74-.06-1.28-.19-1.84H9v3.34h4.96c-.1.83-.64 2.08-1.84 2.92l-.01.12 2.67 2.07.18.02c1.7-1.57 2.68-3.88 2.68-6.63z"/>
-                            <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.84-2.2c-.76.53-1.78.9-3.12.9-2.38 0-4.41-1.57-5.13-3.72l-.11.01-2.78 2.15-.04.1C2.46 15.99 5.48 18 9 18z"/>
-                            <path fill="#FBBC05" d="M3.87 10.8c-.2-.59-.31-1.22-.31-1.8s.11-1.21.31-1.8l-.01-.13-2.79-2.17-.09.04C.35 6.13 0 7.52 0 9s.35 2.87.98 4.09l2.89-2.29z"/>
-                            <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.46 2.01.98 4.91l2.89 2.29c.72-2.15 2.75-3.62 5.13-3.62z"/>
-                        </svg>
-                        เข้าสู่ระบบ Gmail (@skj.ac.th)
-                    </a>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="https://accounts.google.com/ServiceLogin?continue=https://mail.google.com" target="_blank" class="btn btn-google-login" id="btnGoGmail">
+                            <svg width="18" height="18" viewBox="0 0 18 18">
+                                <path fill="#4285F4" d="M17.64 9.2c0-.74-.06-1.28-.19-1.84H9v3.34h4.96c-.1.83-.64 2.08-1.84 2.92l-.01.12 2.67 2.07.18.02c1.7-1.57 2.68-3.88 2.68-6.63z"/>
+                                <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.84-2.2c-.76.53-1.78.9-3.12.9-2.38 0-4.41-1.57-5.13-3.72l-.11.01-2.78 2.15-.04.1C2.46 15.99 5.48 18 9 18z"/>
+                                <path fill="#FBBC05" d="M3.87 10.8c-.2-.59-.31-1.22-.31-1.8s.11-1.21.31-1.8l-.01-.13-2.79-2.17-.09.04C.35 6.13 0 7.52 0 9s.35 2.87.98 4.09l2.89-2.29z"/>
+                                <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0 5.48 0 2.46 2.01.98 4.91l2.89 2.29c.72-2.15 2.75-3.62 5.13-3.62z"/>
+                            </svg>
+                            ไปเข้าสู่ระบบ Gmail เพื่อตั้งรหัสผ่านใหม่
+                        </a>
+
+                        <a href="<?= base_url() ?>" class="btn btn-outline-primary rounded-3 fw-bold py-2">
+                            <i class="bx bx-log-in-circle me-1 align-middle fs-5"></i> กลับไปหน้าเข้าสู่ระบบนักเรียน SKJ
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -551,16 +581,19 @@
 
                     const passCard = document.getElementById('passwordCard');
                     const alertNotice = document.getElementById('alertNotice');
+                    const stepsGuideCard = document.getElementById('stepsGuideCard');
 
                     if (res.data.is_new && res.data.email_password) {
                         document.getElementById('resStatusText').textContent = 'สร้างและออกอีเมลโรงเรียนสำเร็จ!';
                         document.getElementById('resPassword').textContent = res.data.email_password;
                         passCard.style.display = 'block';
+                        if (stepsGuideCard) stepsGuideCard.style.display = 'block';
                         alertNotice.className = 'alert alert-info text-start small mb-3';
                         alertNotice.innerHTML = '<i class="bx bx-info-circle me-1"></i><strong>คำแนะนำการเปิดใช้งานครั้งแรก:</strong><br>นำอีเมลและรหัสผ่านไปล็อกอินใน <strong>Gmail</strong> เมื่อเข้าสู่ระบบครั้งแรก ระบบ Google จะบังคับให้ <strong>ตั้งรหัสผ่านใหม่ส่วนตัว</strong> ทันที';
                     } else {
                         document.getElementById('resStatusText').textContent = 'คุณเคยทำการยืนยันรับอีเมลโรงเรียนแล้ว!';
                         passCard.style.display = 'none';
+                        if (stepsGuideCard) stepsGuideCard.style.display = 'none';
                         alertNotice.className = 'alert alert-warning text-start small mb-3 border-warning';
                         alertNotice.innerHTML = '<i class="bx bx-check-circle me-1"></i><strong>ยืนยันรับอีเมลสำเร็จแล้ว:</strong><br>ใช้อีเมลนี้เข้าสู่ระบบผ่าน Google Account ที่หน้าแรกได้ทันที (หากจำรหัสผ่านไม่ได้ สามารถใช้ปุ่ม <strong>"รีเซ็ตรหัสผ่าน"</strong> ที่หน้าหลักได้)';
                     }

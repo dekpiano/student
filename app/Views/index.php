@@ -522,16 +522,6 @@
         <div class="auth-body">
 
 
-            <!-- Notice Alert Box for Unverified Email Students -->
-            <div class="alert alert-warning border-warning d-flex align-items-center mb-3 rounded-3 shadow-sm p-3"
-                role="alert">
-                <i class="bx bx-bell fs-3 me-2 text-warning flex-shrink-0"></i>
-                <div class="small">
-                    <strong>แจ้งเตือน:</strong> หากยังใช้อีเมลไม่ได้ หรือเพิ่งเข้าใช้งานครั้งแรก กรุณา <a
-                        href="<?= base_url('verify-email') ?>"
-                        class="fw-bold text-dark text-decoration-underline">กดยืนยันตัวตนออกอีเมลที่นี่</a> ก่อนนะครับ
-                </div>
-            </div>
 
             <!-- SECTION 1: LOGIN & RESET PASSWORD -->
             <div class="modern-section-card section-card-login mb-3">
@@ -553,19 +543,35 @@
                     เข้าสู่ระบบด้วย Google (@skj.ac.th)
                 </button>
 
-                <!-- Small Forgot Password Link Right-Aligned -->
-                <div class="text-end mt-2">
-                    <a href="javascript:void(0)" id="btnHomeResetPassword" class="reset-link-btn">
-                        <i class="bx bx-key"></i> ลืมรหัสผ่าน / รีเซ็ตรหัสผ่าน?
+                <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-1">
+                    <span class="text-muted" style="font-size: 0.76rem;">
+                        <i class="bx bx-info-circle text-primary"></i> บัญชี <code>@skj.ac.th</code> เท่านั้น
+                    </span>
+                    <!-- Small Forgot Password Link Right-Aligned -->
+                    <a href="javascript:void(0)" id="btnHomeResetPassword" class="reset-link-btn"
+                        style="font-size: 0.8rem;">
+                        <i class="bx bx-key"></i> ลืม / รีเซ็ตรหัสผ่าน?
                     </a>
+                </div>
+            </div>
+            <hr>
+            <!-- Notice Alert Box for Unverified Email Students -->
+            <div class="alert alert-warning border-warning d-flex align-items-center mb-3 rounded-3 shadow-sm p-3"
+                role="alert">
+                <i class="bx bx-bell fs-3 me-2 text-warning flex-shrink-0"></i>
+                <div class="small">
+                    <strong>สำหรับนักเรียนที่ยังไม่มีอีเมล หรือเข้าใช้งานครั้งแรก:</strong> กรุณา <a
+                        href="<?= base_url('verify-email') ?>"
+                        class="fw-bold text-dark text-decoration-underline">กดยืนยันตัวตนขอรับอีเมลโรงเรียนที่นี่</a>
+                    ก่อนนะครับ
                 </div>
             </div>
 
             <!-- SECTION 2: NEW M.1 STUDENTS REGISTRATION -->
             <div class="modern-section-card section-card-register">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="section-pill-badge pill-register">
-                        <i class="bx bx-user-plus"></i> นักเรียนใหม่และเก่า
+                    <span class="section-pill-badge ">
+                        <i class="bx bx-user-plus"></i> สำหรับนักเรียนที่ยังไม่มีอีเมล
                     </span>
                     <span class="text-info small fw-bold">ยังไม่มีอีเมล</span>
                 </div>
@@ -578,7 +584,8 @@
 
             <!-- Read Details Button (Why Google Account) & User Guide -->
             <div class="mt-3 d-flex flex-column gap-2 text-center">
-                <a href="<?= base_url('guide') ?>" class="btn btn-outline-danger w-100 shadow-sm rounded-3 fw-bold py-2">
+                <a href="<?= base_url('guide') ?>"
+                    class="btn btn-outline-danger w-100 shadow-sm rounded-3 fw-bold py-2">
                     <i class="bx bx-book-open fs-5 me-1 align-middle"></i>
                     <span>คู่มือการใช้งาน & การใช้อีเมลโรงเรียน (@skj.ac.th)</span>
                 </a>
@@ -737,56 +744,56 @@
                             fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
                                 headers: { 'Authorization': 'Bearer ' + tokenResponse.access_token }
                             })
-                            .then(function (res) { return res.json(); })
-                            .then(function (userInfo) {
-                                if (userInfo && userInfo.email) {
-                                    // Send email to our backend
-                                    $.ajax({
-                                        url: '<?= base_url('login/google') ?>',
-                                        type: 'POST',
-                                        data: { email: userInfo.email },
-                                        dataType: 'json',
-                                        success: function (res) {
-                                            if (res.status === 1) {
+                                .then(function (res) { return res.json(); })
+                                .then(function (userInfo) {
+                                    if (userInfo && userInfo.email) {
+                                        // Send email to our backend
+                                        $.ajax({
+                                            url: '<?= base_url('login/google') ?>',
+                                            type: 'POST',
+                                            data: { email: userInfo.email },
+                                            dataType: 'json',
+                                            success: function (res) {
+                                                if (res.status === 1) {
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: 'เข้าสู่ระบบสำเร็จ!',
+                                                        text: res.message,
+                                                        timer: 1500,
+                                                        showConfirmButton: false
+                                                    }).then(function () {
+                                                        window.location.href = res.redirect;
+                                                    });
+                                                } else {
+                                                    showUnverifiedEmailAlert(res.message);
+                                                }
+                                            },
+                                            error: function () {
                                                 Swal.fire({
-                                                    icon: 'success',
-                                                    title: 'เข้าสู่ระบบสำเร็จ!',
-                                                    text: res.message,
-                                                    timer: 1500,
-                                                    showConfirmButton: false
-                                                }).then(function () {
-                                                    window.location.href = res.redirect;
+                                                    icon: 'error',
+                                                    title: 'เกิดข้อผิดพลาด',
+                                                    text: 'ไม่สามารถเชื่อมต่อระบบได้ กรุณาลองใหม่อีกครั้ง',
+                                                    confirmButtonColor: '#e83e8c'
                                                 });
-                                            } else {
-                                                showUnverifiedEmailAlert(res.message);
                                             }
-                                        },
-                                        error: function () {
-                                            Swal.fire({
-                                                icon: 'error',
-                                                title: 'เกิดข้อผิดพลาด',
-                                                text: 'ไม่สามารถเชื่อมต่อระบบได้ กรุณาลองใหม่อีกครั้ง',
-                                                confirmButtonColor: '#e83e8c'
-                                            });
-                                        }
-                                    });
-                                } else {
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'ไม่พบอีเมล',
+                                            text: 'ไม่สามารถดึงข้อมูลอีเมลจาก Google ได้ กรุณาลองใหม่',
+                                            confirmButtonColor: '#e83e8c'
+                                        });
+                                    }
+                                })
+                                .catch(function () {
                                     Swal.fire({
                                         icon: 'error',
-                                        title: 'ไม่พบอีเมล',
-                                        text: 'ไม่สามารถดึงข้อมูลอีเมลจาก Google ได้ กรุณาลองใหม่',
+                                        title: 'เกิดข้อผิดพลาด',
+                                        text: 'ไม่สามารถเชื่อมต่อกับ Google ได้',
                                         confirmButtonColor: '#e83e8c'
                                     });
-                                }
-                            })
-                            .catch(function () {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'เกิดข้อผิดพลาด',
-                                    text: 'ไม่สามารถเชื่อมต่อกับ Google ได้',
-                                    confirmButtonColor: '#e83e8c'
                                 });
-                            });
                         }
                     },
                     error_callback: function (error) {
