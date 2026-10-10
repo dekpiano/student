@@ -2,6 +2,28 @@
 <html lang="th" class="light-style customizer-hide" dir="ltr">
 
 <head>
+    <!-- ตรวจจับและเปิดออกนอกแอป LINE / In-App Browser ไปยัง Chrome/Safari อัตโนมัติ -->
+    <script>
+    (function () {
+        var ua = navigator.userAgent || navigator.vendor || window.opera;
+        var isLine = /Line\//i.test(ua);
+        var isAndroid = /Android/i.test(ua);
+        var isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+        if (isLine) {
+            var currentUrl = window.location.href;
+            if (isAndroid) {
+                var cleanUrl = currentUrl.replace(/^https?:\/\//, '');
+                window.location.href = 'intent://' + cleanUrl + '#Intent;scheme=https;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;end;';
+            } else if (isIOS) {
+                if (currentUrl.indexOf('openExternalBrowser=1') === -1) {
+                    var separator = currentUrl.indexOf('?') !== -1 ? '&' : '?';
+                    window.location.href = currentUrl + separator + 'openExternalBrowser=1';
+                }
+            }
+        }
+    })();
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
